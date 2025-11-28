@@ -210,7 +210,7 @@ const Header = () => {
                 <ul className={`dropdown-menu ${openDropdown === "about" ? "show" : ""}`}>
                   <li><Link to="/founder" onClick={closeMenu}>Founder and MD</Link></li>
                   <li><Link to="/leadership" onClick={closeMenu}>Leadership Team</Link></li>
-                  <li><Link to="/completed-projects" onClick={closeMenu}>Completed Projects</Link></li>
+                  
                   <li><Link to="/services" onClick={closeMenu}>Our Services</Link></li>
                   <li><Link to="/testimonials" onClick={closeMenu}>Testimonials</Link></li>
                 
