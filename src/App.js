@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
-// import Accordion  from './components/Accordion';
+
+// Public pages
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Founder from './pages/Founder';
@@ -15,11 +17,15 @@ import Blog from './pages/Blog';
 import OngoingProjects from './pages/OngoingProjects';
 import ProjectDetail from './pages/ProjectDetail';
 import Media from './pages/Media';
-// import Services from './pages/Services';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
+import Viewspecificvisit from './pages/Viewspecificvisit';
+
+// Auth
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
+
+// Admin pages
 import AdminLogin from './admin/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
 import Dashboard from './admin/Dashboard';
@@ -37,7 +43,6 @@ import InvestorsAdmin from './admin/pages/InvestorsAdmin';
 import ContactAdmin from './admin/pages/ContactAdmin';
 import NavigationAdmin from './admin/pages/NavigationAdmin';
 import CounterupdateAdmin from './admin/pages/counterupdate';
-import Viewspecificvisit from './pages/Viewspecificvisit';
 import SeoAdmin from './admin/pages/SeoAdmin';
 
 function App() {
@@ -45,8 +50,13 @@ function App() {
     <Router>
       <AuthProvider>
         <div className="App">
+          
+          {/* 🌐 Public Header */}
           <Header />
+
           <Routes>
+
+            {/* 🌍 PUBLIC ROUTES */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/founder" element={<Founder />} />
@@ -58,15 +68,17 @@ function App() {
             <Route path="/ongoing-projects" element={<OngoingProjects />} />
             <Route path="/project/:id" element={<ProjectDetail />} />
             <Route path="/media" element={<Media />} />
-            {/* <Route path="/services" element={<Services />} /> */}
             <Route path="/contact" element={<Contact />} />
             <Route path="/careers" element={<Careers />} />
-             <Route path="/Viewspecificvisit/:id" element={<Viewspecificvisit />} />
+            <Route path="/Viewspecificvisit/:id" element={<Viewspecificvisit />} />
 
-            {/* Admin routes */}
+            {/* 🔑 ADMIN LOGIN PAGE */}
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route element={<ProtectedRoute roles={["admin", "editor"]} />}> 
-              <Route path="/admin" element={<AdminLayout />}> 
+
+            {/* 🔐 PROTECTED ADMIN ROUTES */}
+            <Route element={<ProtectedRoute roles={["admin", "editor"]} />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                
                 <Route index element={<Dashboard />} />
                 <Route path="projects" element={<Projects />} />
                 <Route path="completed" element={<CompletedAdmin />} />
@@ -81,11 +93,15 @@ function App() {
                 <Route path="investors" element={<InvestorsAdmin />} />
                 <Route path="contact" element={<ContactAdmin />} />
                 <Route path="navigation" element={<NavigationAdmin />} />
-                  <Route path="counterupdate" element={<CounterupdateAdmin />} />
+                <Route path="counterupdate" element={<CounterupdateAdmin />} />
                 <Route path="seo" element={<SeoAdmin />} />
+
               </Route>
             </Route>
+
           </Routes>
+
+          {/* 🌐 Footer */}
           <Footer />
         </div>
       </AuthProvider>

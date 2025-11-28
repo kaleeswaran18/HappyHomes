@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Load token from localStorage on page refresh
   useEffect(() => {
     const existingToken = getToken();
     const existingRole = getRole();
@@ -16,29 +17,57 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // ------------------------
+  // 🔐 LOGIN (Backend API)
+  // ------------------------
   const login = async ({ username, password }) => {
-    // Placeholder: replace with API call to Node backend
-    // Example: const { token, role } = await authService.login(username, password);
-    // For now, accept a single hardcoded admin credential
-    const isAdmin = username === 'admin' && password === 'admin123';
-    const isEditor = username === 'editor' && password === 'editor123';
-    if (!isAdmin && !isEditor) {
-      throw new Error('Invalid credentials');
+    try {
+      const response = await fetch(
+        "http://localhost:6001/product/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ username, password })
+        }
+      );
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.message || "Invalid credentials");
+      }
+
+      const data = await response.json();
+
+      const issuedToken = data.token;
+      const issuedRole = data.role || "admin"; // default role if backend not sending
+
+      // Save token + role to localStorage
+      saveAuth({ token: issuedToken, role: issuedRole });
+      setToken(issuedToken);
+      setRole(issuedRole);
+
+      return { token: issuedToken, role: issuedRole };
+
+    } catch (error) {
+      console.error("Login Error:", error);
+      throw error;
     }
-    const issuedToken = `demo-token-${Date.now()}`;
-    const issuedRole = isAdmin ? 'admin' : 'editor';
-    saveAuth({ token: issuedToken, role: issuedRole });
-    setToken(issuedToken);
-    setRole(issuedRole);
-    return { token: issuedToken, role: issuedRole };
   };
 
+  // ------------------------
+  // 🚪 LOGOUT
+  // ------------------------
   const logout = () => {
     clearAuth();
     setToken(null);
     setRole(null);
   };
 
+  // ------------------------
+  // 🔐 ROLE CHECK
+  // ------------------------
   const hasRole = (required) => {
     if (!required) return !!token;
     if (!role) return false;
@@ -46,7 +75,11 @@ export const AuthProvider = ({ children }) => {
     return role === required;
   };
 
-  const value = useMemo(() => ({ token, role, loading, login, logout, hasRole }), [token, role, loading]);
+  const value = useMemo(
+    () => ({ token, role, loading, login, logout, hasRole }),
+    [token, role, loading]
+  );
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

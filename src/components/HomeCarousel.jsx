@@ -7,59 +7,82 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./HomeCarousel.css";
 
-const Home = () => {
+const HomeCarousel = () => {
   const [slides, setSlides] = useState([]);
-  const videoRefs = useRef({}); 
-  const swiperRef = useRef(null);
+  const videoRefs = useRef({});
   const timerRef = useRef(null);
+  const swiperRef = useRef(null);
 
-  // Fetch slider data
+  /* ---------------- FETCH SLIDER DATA ---------------- */
   useEffect(() => {
-    axios.get("https://samplebuildapi-1.onrender.com/product/slidersget")
+    axios
+      .get("https://samplebuildapi-1.onrender.com/product/slidersget")
       .then((res) => {
-        setSlides(res.data?.data?.[0]?.images || []);
+        setSlides(res?.data?.data?.[0]?.images || []);
       })
       .catch((err) => console.error(err));
   }, []);
 
-  // Clear timer
+  /* ---------------- POWER-SAVE AUTOPLAY UNLOCK ---------------- */
+  useEffect(() => {
+    const unlock = () => {
+      Object.values(videoRefs.current).forEach((video) => {
+        if (video) {
+          video.play().catch(() => {});
+          video.pause();
+        }
+      });
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("touchstart", unlock);
+    };
+
+    window.addEventListener("click", unlock);
+    window.addEventListener("touchstart", unlock);
+
+    return () => {
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("touchstart", unlock);
+    };
+  }, []);
+
+  /* ---------------- CLEAR TIMER ---------------- */
   const clearTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+    if (timerRef.current) clearTimeout(timerRef.current);
   };
 
-  // Slide change handler
+  /* ---------------- SLIDE CHANGE HANDLER ---------------- */
   const handleSlideChange = (swiper) => {
     clearTimer();
 
     const index = swiper.realIndex;
     const item = slides[index];
-
     if (!item) return;
 
-    // Image Slide → 40 seconds delay
+    /* ---------- IMAGE: Auto-next after 10 seconds ---------- */
     if (item.type === "image") {
       timerRef.current = setTimeout(() => {
         swiper.slideNext();
-      }, 10000); // 40 seconds
+      }, 10000);
     }
 
-    // Video Slide → play full video then next
+    /* ---------- VIDEO: Play + wait until duration ---------- */
     if (item.type === "video") {
       const video = videoRefs.current[index];
       if (!video) return;
 
       video.currentTime = 0;
 
-      video.onloadedmetadata = () => {
-        const duration = video.duration * 1000;
-        video.play();
+      // Safe autoplay
+      video.play().catch(() => {
+        setTimeout(() => video.play().catch(() => {}), 500);
+      });
 
-        timerRef.current = setTimeout(() => {
-          swiper.slideNext();
-        }, duration);
-      };
+      // Next slide timing
+      const duration = video.duration ? video.duration * 1000 : 10000;
+
+      timerRef.current = setTimeout(() => {
+        swiper.slideNext();
+      }, duration);
     }
   };
 
@@ -78,20 +101,30 @@ const Home = () => {
         {slides.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="hero-slide">
-              
-              {/* IMAGE */}
+
+              {/* ---------- IMAGE SLIDE ---------- */}
               {item.type === "image" && (
                 <img src={item.url} alt={`slide-${index}`} />
               )}
 
-              {/* VIDEO */}
+              {/* ---------- VIDEO SLIDE (fixed autoplay) ---------- */}
               {item.type === "video" && (
                 <video
                   src={item.url}
                   muted
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  className="video-slide"
                   playsInline
+                  preload="metadata"
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  onLoadedMetadata={() => {
+                    const video = videoRefs.current[index];
+                    if (!video) return;
+
+                    video.currentTime = 0;
+
+                    video.play().catch(() => {
+                      setTimeout(() => video.play().catch(() => {}), 300);
+                    });
+                  }}
                 />
               )}
 
@@ -103,4 +136,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeCarousel;
