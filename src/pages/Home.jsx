@@ -335,8 +335,8 @@ const [projects, setProjects] = useState([]);
    useEffect(() => {
     const fetchCounters = async () => {
       try {
-        const res = await axios.get("http://localhost:6001/product/getcounter");
-        const res1 = await axios.get("http://localhost:6001/product/getprojectsSchema");
+        const res = await axios.get("https://samplebuildapi-1.onrender.com/product/getcounter");
+        const res1 = await axios.get("https://samplebuildapi-1.onrender.com/product/getprojectsSchema");
         // API returns: { statuscode, message, data: [...] }
         const data = res.data.data || [];
         const data1 = res1.data.data || [];

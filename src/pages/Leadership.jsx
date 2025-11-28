@@ -9,7 +9,7 @@ const Leadership = () => {
   const fetchLeadership = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:6001/product/LeadershipgetSchema"
+        "https://samplebuildapi-1.onrender.com/product/LeadershipgetSchema"
       );
 
       if (res.data?.data) {

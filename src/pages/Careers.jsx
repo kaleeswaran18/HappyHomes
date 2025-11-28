@@ -13,7 +13,7 @@ const Careers = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get("http://localhost:6001/product/getcarrer");
+        const res = await axios.get("https://samplebuildapi-1.onrender.com/product/getcarrer");
         setJobOpenings(res.data.data || []);
       } catch (err) {
         console.error("Career Fetch Error:", err);

@@ -12,7 +12,7 @@ const Viewspecificvisit = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:6001/product/ViewProject/${id}`)
+      .get(`https://samplebuildapi-1.onrender.com/product/ViewProject/${id}`)
       .then((res) => setProjects(res.data.data || []))
       .catch((err) => console.log(err));
   }, [id]);

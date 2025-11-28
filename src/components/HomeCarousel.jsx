@@ -15,7 +15,7 @@ const Home = () => {
 
   // Fetch slider data
   useEffect(() => {
-    axios.get("http://localhost:6001/product/slidersget")
+    axios.get("https://samplebuildapi-1.onrender.com/product/slidersget")
       .then((res) => {
         setSlides(res.data?.data?.[0]?.images || []);
       })

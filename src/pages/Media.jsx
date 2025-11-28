@@ -7,7 +7,7 @@ const LatestMedia = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:6001/product/gethomeimage")
+      .get("https://samplebuildapi-1.onrender.com/product/gethomeimage")
       .then((res) => setMedia(res.data.data || []))
       .catch((err) => console.log(err));
   }, []);

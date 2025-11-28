@@ -8,7 +8,7 @@ const Founder = () => {
 
   const fetchFounder = async () => {
     try {
-      const res = await axios.get("http://localhost:6001/product/FoundergetSchema");
+      const res = await axios.get("https://samplebuildapi-1.onrender.com/product/FoundergetSchema");
 
       if (res.data?.data?.length > 0) {
         const f = res.data.data[0]; // Only 1 founder

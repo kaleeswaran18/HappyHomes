@@ -40,7 +40,7 @@ const DataTable = ({ columns, rows, title }) => {
     const fetchAddFormNames = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:6001/product/getprojectsSchema"
+          "http://samplebuildapi-1.onrender.com/product/getprojectsSchema"
         );
         setProjectNamesAddForm(res.data.data || res.data || []);
       } catch (err) {
@@ -51,7 +51,7 @@ const DataTable = ({ columns, rows, title }) => {
     const fetchMultiUploadNames = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:6001/product/getAlprojectsSchema"
+          "https://samplebuildapi-1.onrender.com/product/getAlprojectsSchema"
         );
         setProjectNamesMultiUpload(res.data.data || res.data || []);
       } catch (err) {
@@ -115,7 +115,7 @@ const DataTable = ({ columns, rows, title }) => {
   // Fetch data by title
   const fetchData = async () => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
 
       if (title === "Home Content") apiUrl = `${base}/slidersget`;
@@ -173,7 +173,7 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendAddRequest = async (data) => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
 
       if (title === "Home Content") apiUrl = `${base}/sliderscreate`;
@@ -229,7 +229,7 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendEditRequest = async (data) => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
 
       if (title === "Projects") apiUrl = `${base}/updateprojectsSchema`;
@@ -277,7 +277,7 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendDeleteRequest = async (item) => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
       const formData = new FormData();
 
@@ -555,7 +555,7 @@ const DataTable = ({ columns, rows, title }) => {
 
                   try {
                     const res = await axios.post(
-                      "http://localhost:6001/product/multiUpload",
+                      "https://samplebuildapi-1.onrender.com/product/multiUpload",
                       formData,
                       { headers: { "Content-Type": "multipart/form-data" } }
                     );

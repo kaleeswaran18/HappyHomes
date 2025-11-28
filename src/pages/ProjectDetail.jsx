@@ -19,7 +19,7 @@ const ProjectDetail = () => {
     const fetchProject = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:6001/product/getAlprojectsSchema"
+          "https://samplebuildapi-1.onrender.com/product/getAlprojectsSchema"
         );
 
         // Find by ID

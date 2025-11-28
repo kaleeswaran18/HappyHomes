@@ -12,7 +12,7 @@ const Contact = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await axios.get("http://localhost:6001/product/getcontact");
+        const res = await axios.get("https://samplebuildapi-1.onrender.com/product/getcontact");
         setContactInfo(res.data.data);
       } catch (err) {
         console.error("API Error:", err);

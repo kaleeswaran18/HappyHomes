@@ -13,7 +13,7 @@ const OngoingProjects = () => {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:6001/product/getprojectsSchema"
+          "https://samplebuildapi-1.onrender.com/product/getprojectsSchema"
         );
         setProjects(res.data?.data || []);
       } catch (err) {
