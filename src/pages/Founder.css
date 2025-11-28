@@ -1,21 +1,26 @@
+/* MAIN PAGE */
 .founder-page {
+  width: 100%;
   min-height: 100vh;
   padding-top: 0;
 }
 
+/* CONTENT WRAPPER */
 .founder-content {
   padding: 4rem 0;
+  width: 100%;
 }
 
 /* ----------------------------------- */
-/* FOUNDER PROFILE LAYOUT              */
+/* FOUNDER PROFILE (IMAGE + CONTENT)    */
 /* ----------------------------------- */
 .founder-profile {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1.4fr;
   gap: 3rem;
   margin-bottom: 4rem;
   align-items: center;
+  width: 100%;
 }
 
 .founder-image {
@@ -25,7 +30,7 @@
 .founder-photo {
   width: 100%;
   height: auto;
-  max-height: 550px;
+  max-height: 580px;
   object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -50,15 +55,49 @@
 }
 
 .founder-title {
-  color: #666;
   font-size: 1.2rem;
+  color: #666;
   margin-bottom: 1.8rem;
 }
 
+/* ----------------------------------- */
+/* RESPONSIVE DESCRIPTION (UPDATED)    */
+/* ----------------------------------- */
+
+.founder-bio {
+  width: 100%;
+  max-width: 900px;         /* desktop readable width */
+}
+
 .founder-bio p {
-  line-height: 1.8;
   font-size: 1.15rem;
+  line-height: 1.9;
   color: #444;
+  margin-bottom: 1.5rem;
+  text-align: justify;      /* clean readable layout */
+  word-wrap: break-word;    /* no overflow */
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .founder-bio p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    text-align: left;       /* mobile readability */
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .founder-bio {
+    padding: 0 10px;        /* add safe padding */
+  }
+
+  .founder-bio p {
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: left;
+  }
 }
 
 /* ----------------------------------- */
@@ -78,7 +117,7 @@
 
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 2rem;
 }
 
@@ -96,9 +135,9 @@
 }
 
 .achievement-item h3 {
-  color: #c49b3a;
   font-size: 2.1rem;
   font-weight: 700;
+  color: #c49b3a;
 }
 
 .achievement-item p {
@@ -107,12 +146,15 @@
 }
 
 /* ----------------------------------- */
-/* RESPONSIVE                          */
+/* RESPONSIVE BREAKPOINTS              */
 /* ----------------------------------- */
 
+/* LAPTOP & TABLET */
 @media (max-width: 1024px) {
+
   .founder-profile {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .founder-details {
@@ -120,20 +162,34 @@
   }
 
   .founder-photo {
-    max-height: 420px;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
   }
 }
 
+/* MOBILE */
 @media (max-width: 600px) {
+
+  .founder-content {
+    padding: 2.5rem 0;
+  }
+
   .founder-photo {
-    max-height: 350px;
+    width: 100%;
+    height: auto;
+    max-height: none;    /* full visible */
   }
 
   .achievements-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr; /* one card per row */
   }
 
   .founder-details h2 {
     font-size: 2rem;
+  }
+
+  .founder-name {
+    font-size: 1.8rem;
   }
 }

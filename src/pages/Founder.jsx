@@ -27,25 +27,26 @@ const Founder = () => {
   return (
     <div className="founder-page">
 
-      {/* ---------------- HEADER ---------------- */}
+      {/* Page Header */}
       <div className="services-header" style={{ backgroundImage: `url(${headerBg})` }}>
-        <div className="services-header-overlay"></div>
+        <div className="services-header-overlay" />
         <div className="services-header-left">
           <h1>Founder and Managing Director</h1>
           <p>Visionary Leadership Since 1993</p>
         </div>
       </div>
 
-      {/* ---------------- CONTENT ---------------- */}
+      {/* Content */}
       <div className="container">
         {!founder ? (
           <p>Loading...</p>
         ) : (
           <section className="founder-content">
 
+            {/* Founder Section */}
             <div className="founder-profile">
 
-              {/* ---------- IMAGE ---------- */}
+              {/* Left Side Image */}
               <div className="founder-image">
                 {founder.mediaType === "image" && (
                   <img src={founder.image} alt={founder.name} className="founder-photo" />
@@ -62,12 +63,10 @@ const Founder = () => {
                 )}
               </div>
 
-              {/* ---------- DETAILS ---------- */}
+              {/* Right Side Text */}
               <div className="founder-details">
                 <h2>Our Founder</h2>
-
                 <p className="founder-name">{founder.name}</p>
-
                 <p className="founder-title">
                   {founder.role || "Founder & Managing Director"}
                 </p>
@@ -76,12 +75,12 @@ const Founder = () => {
                   <p>{founder.description}</p>
                 </div>
               </div>
+
             </div>
 
-            {/* ------------ ACHIEVEMENTS ------------ */}
+            {/* Achievements */}
             <div className="achievements-section">
               <h2>Key Achievements</h2>
-
               <div className="achievements-grid">
                 <div className="achievement-item">
                   <h3>32+ Years</h3>
