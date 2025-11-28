@@ -1,0 +1,30 @@
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e9eef5;
+  background: var(--brand-surface);
+}
+.admin-topbar h3 {
+  margin: 0;
+  color: var(--brand-primary);
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-outline {
+  border: 1px solid #d1d9e6;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+}
+.btn-primary {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--brand-primary));
+}

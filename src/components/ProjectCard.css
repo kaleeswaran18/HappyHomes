@@ -1,0 +1,104 @@
+.project-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 350px;
+  margin: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+}
+
+.project-image {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.4s ease;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.08);
+}
+
+.project-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #fbbf24;
+  color: #000;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.project-content {
+  padding: 1.5rem;
+}
+
+.project-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+  color: #0b1433;
+}
+
+.project-location {
+  color: #c49b3a;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.project-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  height: 57px;
+  overflow: hidden;
+}
+
+.project-features {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.feature {
+  background: #f4f4f4;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.project-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-primary {
+  background: #c49b3a;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #b58b25;
+}

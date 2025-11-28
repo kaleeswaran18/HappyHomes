@@ -1,0 +1,348 @@
+
+.careers-page {
+  min-height: 100vh;
+  padding-top: 2rem;
+  background: #f7f7f7;
+  font-family: "Inter", sans-serif;
+}
+
+.page-header {
+  background-size: cover;
+  background-position: center;
+  padding: 6rem 0;
+  position: relative;
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.page-header .container {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* ------------------------------
+   SECTION CONTENT
+------------------------------ */
+
+.careers-content {
+  padding: 4rem 0;
+}
+
+.careers-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+}
+
+.careers-intro h2 {
+  color: #222;
+  font-size: 2.2rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+
+.careers-intro p {
+  color: #555;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* ------------------------------
+   BENEFITS
+------------------------------ */
+
+.benefits-section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  color: #222;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.benefit-item {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.benefit-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.benefit-item h4 {
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+  color: #222;
+}
+
+/* ------------------------------
+   JOB OPENINGS – BEAUTIFUL CARDS
+------------------------------ */
+
+.openings-section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+}
+
+.jobs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 2rem;
+}
+
+/* MODERN CARD DESIGN */
+.job-card {
+  background: linear-gradient(135deg, #ffffff 0%, #faf7f1 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(196, 155, 58, 0.2);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.job-card::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: #c49b3a;
+  opacity: 0.15;
+  border-radius: 50%;
+  transition: 0.4s ease;
+}
+
+.job-card:hover::before {
+  transform: scale(1.4);
+}
+
+.job-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* Header */
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.job-header h3 {
+  font-size: 1.3rem;
+  color: #222;
+  margin: 0;
+}
+
+/* Badge */
+.job-type {
+  background: #c49b3a;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Job Details */
+.job-details {
+  margin-top: 1rem;
+  margin-bottom: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.job-details span {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Button */
+.apply-btn {
+  display: inline-block;
+  background: #c49b3a;
+  color: white;
+  padding: 0.75rem 1.8rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.apply-btn:hover {
+  background: #a8822f;
+  transform: scale(1.05);
+}
+
+/* ------------------------------
+   GENERAL APPLY SECTION
+------------------------------ */
+
+.apply-section {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(145deg, #ffffff, #fafafa);
+  margin-top: 4rem;
+  border-radius: 20px;
+}
+
+.general-apply-btn {
+  display: inline-block;
+  background: #c49b3a;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.general-apply-btn:hover {
+  background: #a8822f;
+  transform: scale(1.05);
+}
+
+/* ------------------------------
+   RESPONSIVE
+------------------------------ */
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .jobs-list {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card {
+    padding: 1.6rem;
+  }
+
+  .job-header h3 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .jobs-list {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card {
+    padding: 1.6rem;
+  }
+  .job-header h3 {
+    font-size: 1.1rem;
+  }
+
+}
+/* POPUP MODAL */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box {
+  background: #fff;
+  padding: 2rem;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+  animation: popupFade 0.3s ease;
+}
+
+.popup-text {
+  font-size: 1.1rem;
+  color: #444;
+  margin: 1rem 0 2rem;
+}
+
+.popup-close-btn {
+  background: #c49b3a;
+  color: #fff;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.popup-close-btn:hover {
+  background: #a8822f;
+  transform: scale(1.05);
+}
+
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

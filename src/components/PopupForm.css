@@ -1,0 +1,159 @@
+/* Overlay background for popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* Container */
+.popup-container {
+  position: relative;
+  max-width: 420px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+  padding: 55px;
+  text-align: center;
+  overflow: hidden;
+  z-index: 2001;
+}
+
+/* Image animation */
+.popup-image {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  animation: rotateInDownLeft 1s ease-in-out;
+}
+
+@keyframes rotateInDownLeft {
+  from {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+/* Close button */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2002;
+}
+
+.close-button svg {
+  width: 18px;
+  height: 18px;
+  fill: #444;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-button svg:hover {
+  fill: rgb(43, 40, 40);
+}
+
+/* Headings */
+.popup-content h2 {
+  color: #0c2d57;
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+.popup-content h3 {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+/* Form */
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #0c2d57;
+}
+
+/* Submit button */
+.submit-btn  p {
+  margin: 0;
+}
+.submit-btn {
+  background-color: #0c2d57;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #ff6600;
+}
+
+.submit-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+}
+
+
+
+
+
+

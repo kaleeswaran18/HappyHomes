@@ -1,0 +1,18 @@
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+.icon-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+.icon-btn:active { transform: translateY(0); }
+.icon-btn.success { background: linear-gradient(135deg, var(--success, #22c55e), var(--accent-1, #6ba6a9)); }
+.icon-btn.warning { background: linear-gradient(135deg, var(--warning, #f59e0b), var(--accent-2, #f4b431)); }
+.icon-btn.danger { background: linear-gradient(135deg, var(--danger, #ef4444), var(--accent-3, #e64b3b)); }
+.icon-only { padding: 8px; }

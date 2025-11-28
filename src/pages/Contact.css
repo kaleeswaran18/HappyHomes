@@ -1,0 +1,139 @@
+/* HERO */
+.contact-hero {
+  height: 320px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+}
+
+.hero-content {
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero-content p {
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+/* GRID */
+.contact-grid-modern {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+/* LEFT INFO CARD */
+.info-card-modern {
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.info-card-modern h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.info-line {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: start;
+}
+
+.icon-box {
+  font-size: 2rem;
+  background: #c49b3a10;
+  padding: 15px;
+  border-radius: 10px;
+  color: #c49b3a;
+  width: 55px;
+  height: 55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* RIGHT CARD */
+.form-card-modern {
+  padding: 30px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.form-card-modern h2 {
+  margin-bottom: 10px;
+}
+
+.form-card-modern p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* BUTTON */
+.modern-btn {
+  background: linear-gradient(135deg, #c49b3a, #b08934);
+  border: none;
+  padding: 15px 25px;
+  color: #fff;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.modern-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(196,155,58,0.5);
+}
+
+/* MAP */
+.map-section-modern {
+  margin-top: 40px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.18);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .contact-grid-modern {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-hero,
+.hero-overlay,
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.form-card-modern,
+.info-card-modern {
+  position: relative;
+  z-index: 5; /* ⭐ ensures click works */
+}

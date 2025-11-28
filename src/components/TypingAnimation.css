@@ -1,0 +1,30 @@
+.typing-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0c2d57;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.typing-span {
+  color: #3700ff;
+  font-weight: 700;
+}
+
+/* Blinking cursor animation */
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  width: 2px;
+  background: #3700ff;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0;
+  }
+}

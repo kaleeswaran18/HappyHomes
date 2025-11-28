@@ -1,0 +1,42 @@
+:root {
+  --brand-primary: #1f3a5f; /* deep blue similar to site header tone */
+  --brand-bg: #f7f9fc;
+  --brand-surface: #ffffff;
+  --brand-text: #222222;
+  --brand-muted: #6b7280;
+  --accent-1: #6ba6a9; /* ANALYSIS */
+  --accent-2: #f4b431; /* INVESTMENT */
+  --accent-3: #e64b3b; /* GROWTH */
+  --accent-4: #7d1d8f; /* BENEFITS */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow-1: 0 6px 20px rgba(31, 58, 95, 0.08);
+}
+
+.admin-shell {
+  background: var(--brand-bg);
+  color: var(--brand-text);
+  min-height: calc(100vh - 120px);
+}
+
+.admin-card {
+  background: var(--brand-surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-1);
+  border: 1px solid #e9eef5;
+  height: 100vh;
+}
+
+.accent-gradient {
+  background: linear-gradient(135deg, var(--accent-1), var(--brand-primary));
+}
+
+.fade-in {
+  animation: fadeIn 300ms ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

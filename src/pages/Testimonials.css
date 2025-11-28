@@ -1,0 +1,158 @@
+.testimonials-page {
+  width: 100%;
+  background: #fafafa;
+}
+
+/* Header */
+.services-header {
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.services-header-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #00000070;
+}
+
+.services-header-left {
+  position: relative;
+  z-index: 2;
+  padding-left: 60px;
+  color: #fff;
+}
+
+.services-header-left h1 {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+/* Intro */
+.testimonials-intro {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.testimonials-intro h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.testimonials-intro p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Grid */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 40px;
+}
+
+/* Card */
+.testimonial-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px #00000015;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px #00000030;
+}
+
+/* Image */
+.testimonial-img-box {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.testimonial-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Rating */
+.testimonial-rating .star {
+  font-size: 18px;
+  color: #ffd700;
+}
+
+/* Text */
+.testimonial-text {
+  font-size: 15px;
+  color: #444;
+  margin: 12px 0 18px;
+  min-height: 45px;
+}
+
+/* Author */
+.testimonial-author h4 {
+  font-size: 18px;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.testimonial-author p {
+  font-size: 14px;
+  color: #555;
+}
+
+.testimonial-day {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #777;
+}
+
+/* Stats Section */
+.testimonials-stats {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #e60023;
+}
+
+.stat-label {
+  font-size: 16px;
+  color: #444;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

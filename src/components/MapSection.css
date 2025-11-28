@@ -1,0 +1,29 @@
+.map-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  background-color: #f9f9f9;
+  /* margin: 80px 0; */
+}
+
+.map-container {
+  width: 80%;
+  max-width: 1200px;
+  height: 450px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.map-container:hover {
+  transform: scale(1.02);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

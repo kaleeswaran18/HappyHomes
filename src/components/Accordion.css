@@ -1,0 +1,65 @@
+.accordion-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px 0;
+}
+
+.accordion-wrapper {
+  width: 80%;
+  box-sizing: border-box;
+}
+
+/* 🟩 Main accordion border wrapping both header + content */
+details {
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+/* 🟦 Header styling */
+summary.accordion-header {
+  background-color: #f9f9f9;
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  font-weight: 600;
+  border-bottom: 2px solid black; /* separates header from content */
+}
+
+summary.accordion-header::-webkit-details-marker {
+  display: none; /* hides default arrow */
+}
+
+/* 🟨 Content area */
+.accordion-body {
+  padding: 15px 20px;
+  background-color: #fff;
+  animation: fadeIn 0.3s ease;
+}
+
+/* 🟧 Optional hover & open effects */
+details:hover {
+  border-color: #007bff;
+}
+
+details[open] summary {
+  background-color: #e9ecef;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

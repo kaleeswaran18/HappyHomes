@@ -1,0 +1,214 @@
+.hotel-card {
+  width: 330px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  background: #000;
+}
+
+.hotel-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.card-content {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 18px;
+  color: #fff;
+
+  /* Gradient Overlay */
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.8),
+    rgba(0,0,0,0.0)
+  );
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.price {
+  float: right;
+  background: rgba(255,255,255,0.3);
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.description {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.tags {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.tag {
+  background: rgba(255,255,255,0.15);
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.reserve-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 16px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  color: #000;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.2);
+}
+.ongoing-projects-page {
+  width: 100%;
+  background: #f8f8f8;
+}
+
+/* Header */
+.services-header {
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.services-header-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #0000006e;
+}
+
+.services-header-left {
+  position: relative;
+  z-index: 2;
+  padding-left: 60px;
+  color: #fff;
+}
+
+.services-header-left h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Projects Grid */
+.projects-grid {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+  gap: 25px;
+}
+
+.project-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px #00000015;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px #00000030;
+}
+
+.project-img-box {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Card Body */
+.project-card-body {
+  padding: 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card-body h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+  min-height: 45px;
+}
+
+/* Info section */
+.project-info p {
+  font-size: 14px;
+  margin: 4px 0;
+  color: #333;
+}
+
+.project-btn {
+  margin-top: auto;
+  width: 100%;
+  background: #e60023;
+  border: none;
+  padding: 10px 0;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.project-btn:hover {
+  background: #b8001c;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .services-header-left h1 {
+    font-size: 32px;
+  }
+}
