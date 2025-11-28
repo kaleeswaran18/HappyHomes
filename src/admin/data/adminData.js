@@ -35,6 +35,9 @@ export const SECTIONS = {
          { key: 'status', label: 'status' },
       { key: 'day', label: 'day' },
        { key: 'time', label: 'time' },
+       { key: 'email', label: 'email' },
+       { key: 'project', label: 'project' },
+       
 
     ],
 
