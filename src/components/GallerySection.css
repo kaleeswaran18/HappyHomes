@@ -1,3 +1,5 @@
+/* ================= MAIN GALLERY SECTION ================= */
+
 .gallery-section {
   max-width: 1200px;
   margin: 60px auto;
@@ -35,7 +37,8 @@
   transition: transform 0.3s ease;
 }
 
-.gallery-item img {
+.gallery-item img,
+.video-thumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -62,14 +65,126 @@
   opacity: 1;
 }
 
-.title {
-  font-size: 0.95rem;
-  font-weight: 500;
+/* ================= POPUP / MODAL ================= */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
 }
-.video-thumb {
+
+.popup-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
+}
+
+.popup-media {
+  max-width: 100%;
+  max-height: 75vh;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+/* ================= CLOSE BUTTON ================= */
+
+.close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 38px;
+  cursor: pointer;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 12px;
+  border-radius: 6px;
+  z-index: 9999;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================= THUMBNAIL STRIP ================= */
+
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 55px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
+.thumbnail img,
+.thumbnail video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
 }
 
+.thumbnail.active-thumb {
+  border: 2px solid #c49a3a;
+  transform: scale(1.05);
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+  .popup-content {
+    max-width: 95%;
+    max-height: 95%;
+  }
+
+  .popup-media {
+    max-height: 60vh;
+  }
+
+  .close-btn {
+    top: -30px;
+    right: 0;
+    font-size: 32px;
+  }
+
+  .thumbnail {
+    width: 65px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .popup-media {
+    max-height: 55vh;
+  }
+
+  .close-btn {
+    font-size: 28px;
+    top: -25px;
+  }
+
+  .thumbnail {
+    width: 60px;
+    height: 45px;
+  }
+}
