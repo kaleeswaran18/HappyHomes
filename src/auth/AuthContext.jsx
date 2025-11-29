@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   const login = async ({ username, password }) => {
     try {
       const response = await fetch(
-        "http://localhost:6001/product/login",
+        "https://samplebuildapi-1.onrender.com/product/login",
         {
           method: "POST",
           headers: {

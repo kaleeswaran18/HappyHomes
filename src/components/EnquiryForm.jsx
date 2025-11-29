@@ -28,7 +28,7 @@ const EnquiryForm = ({
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get("http://localhost:6001/product/getAlprojectsSchema");
+        const res = await axios.get("https://samplebuildapi-1.onrender.com/product/getAlprojectsSchema");
 
         const list = res.data.data.map((p) => ({
           id: p._id,
@@ -96,7 +96,7 @@ const EnquiryForm = ({
         message: formData.message
       };
 
-      await axios.post("http://localhost:6001/product/createform", payload);
+      await axios.post("https://samplebuildapi-1.onrender.com/product/createform", payload);
 
       setIsSubmitting(false);
       setIsSubmitted(true);
