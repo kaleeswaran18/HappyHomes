@@ -40,7 +40,7 @@ const DataTable = ({ columns, rows, title }) => {
     const fetchAddFormNames = async () => {
       try {
         const res = await axios.get(
-          "http://samplebuildapi-1.onrender.com/product/getprojectsSchema"
+          "https://samplebuildapi-1.onrender.com/product/getprojectsSchema"
         );
         setProjectNamesAddForm(res.data.data || res.data || []);
       } catch (err) {
@@ -267,6 +267,7 @@ const DataTable = ({ columns, rows, title }) => {
     const res = await sendDeleteRequest(toDelete);
 
     if (res.statuscode === 200) {
+      window.location.reload(); 
       await fetchData();
       showToast("Deleted successfully", "success");
     } else showToast("Delete failed", "danger");
@@ -277,14 +278,42 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendDeleteRequest = async (item) => {
     try {
-      const base = "https://samplebuildapi-1.onrender.com/product";
+      const base = "http://localhost:6001/product";
       let apiUrl = "";
       const formData = new FormData();
 
-      if (title === "Projects") {
+      if (title === "Home Content") {
+        apiUrl = `${base}/slidersdelete`;
+        formData.append("_id", item._id);
+        formData.append("url", item.file?.url);
+      } else if (title === "Projects") {
         apiUrl = `${base}/deleteprojectsSchema`;
         formData.append("_id", item._id);
+      } else if (title === "ProjectHouse") {
+        apiUrl = `${base}/deleteAlprojectsSchema`;
+        formData.append("_id", item._id);
+      } else if (title === "Testimonials") {
+        apiUrl = `${base}/deleteTestimonials`;
+        formData.append("_id", item._id);
+      } else if (title === "Careers") {
+        apiUrl = `${base}/deletecarrer`;
+        formData.append("_id", item._id);
+      } else if (title === "Leadership Team") {
+        apiUrl = `${base}/LeadershipdeleteSchema`;
+        formData.append("_id", item._id);
+      } else if (title === "Services") {
+        apiUrl = `${base}/deleteservicesSchema`;
+        formData.append("_id", item._id);
+      } else if (title === "Contact") {
+        apiUrl = `${base}/deletecontact`;
+        formData.append("_id", item._id);
       }
+      else if (title === "counterupdate") {
+        apiUrl = `${base}/deletecounter`;
+        formData.append("_id", item._id);
+      }
+
+   
 
       const res = await axios.post(apiUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -296,6 +325,7 @@ const DataTable = ({ columns, rows, title }) => {
     }
   };
 
+
   // FORM UI
   const renderForm = () => (
     <div className="form-grid">
@@ -304,22 +334,21 @@ const DataTable = ({ columns, rows, title }) => {
           <label>{c.label}</label>
 
           {fieldTypes[c.key] === "select" ? (
-            <select
-              className="admin-select"
-              value={draft[c.key] ?? ""}
-              onChange={(e) =>
-                setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-              }
-            >
-              <option value="">-- Select Project Place --</option>
+           <select
+  className="admin-select"
+  value={draft[c.key] ?? ""}
+  onChange={(e) =>
+    setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+  }
+>
+  <option value="">-- Select Project --</option>
 
-              {projectNamesAddForm.map((p) => (
-                <option key={p._id} value={p.name}>
-                  {p.name}
-                </option>
-              ))}
-
-            </select>
+  {projectNamesAddForm.map((p) => (
+    <option key={p._id} value={p.name}>
+      {p.name}
+    </option>
+  ))}
+</select>
           ) : fieldTypes[c.key] === "file" ? (
             <div className="file-upload-box">
               <label className="file-upload-label">
