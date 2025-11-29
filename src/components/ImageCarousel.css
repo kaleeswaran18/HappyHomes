@@ -90,3 +90,18 @@
     display: none; /* hide on small screens */
   }
 }
+.carousel-slide img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;   /* Image fill properly inside circle */
+  border-radius: 50%;  /* PERFECT ROUND */
+  border: 2px solid #e3e3e3;
+  background: #fff;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* optional premium effect */
+}
+
+.carousel-slide img:hover {
+  transform: scale(1.08);
+}
