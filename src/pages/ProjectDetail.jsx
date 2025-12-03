@@ -5,6 +5,27 @@ import "./ProjectDetail.css";
 import FooterJB from "../components/FooterJB";
 import axios from "axios";
 
+import {
+  MdCameraswitch,
+  MdSecurity,
+} from "react-icons/md";
+
+import {
+  GiBatteryPack,
+  GiStreetLight,
+  GiKitchenKnives,
+  GiWaterDrop,
+  GiKidSlide
+} from "react-icons/gi";
+
+import {
+  FaRoad,
+  FaDumbbell,
+  FaBuilding,
+  FaStamp,
+  FaTree
+} from "react-icons/fa";
+
 const ProjectDetail = () => {
   const { id } = useParams();
   const [showEnquiryForm, setShowEnquiryForm] = useState(false);
@@ -33,14 +54,6 @@ const ProjectDetail = () => {
   if (!project) return <div className="loading">Loading...</div>;
 
   const allImages = [project.image, ...project.files.map((f) => f.url)];
-
-  const nextImage = () => {
-    setActiveIndex((prev) => (prev + 1) % allImages.length);
-  };
-
-  const prevImage = () => {
-    setActiveIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
-  };
 
   return (
     <div className="project-detail-page">
@@ -116,36 +129,95 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      {/* POPUP */}
+      {/* POPUP SLIDER (NO ARROWS — ONLY THUMBNAILS) */}
       {popupOpen && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-
-            <button className="close-btn" onClick={() => setPopupOpen(false)}>
-              ✕
-            </button>
-
-            <button className="nav-btn left" onClick={prevImage}>❮</button>
-
+        <div className="popup-overlay" onClick={() => setPopupOpen(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
             <img
               src={allImages[activeIndex]}
               alt="Large View"
               className="popup-image"
             />
 
-            <button className="nav-btn right" onClick={nextImage}>❯</button>
+            {/* POPUP THUMBNAILS */}
+            <div className="popup-thumbnails">
+              {allImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  className={`popup-thumb ${
+                    activeIndex === index ? "active-popup-thumb" : ""
+                  }`}
+                  onClick={() => setActiveIndex(index)}
+                  alt="Popup Thumbnail"
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}
 
-      {/* ENQUIRY FORM */}
-      {showEnquiryForm && (
-        <EnquiryForm
-          title={`Enquire About ${project.name}`}
-          subtitle={project.location}
-          onClose={() => setShowEnquiryForm(false)}
-        />
-      )}
+      {/* CATEGORY TABS */}
+      <div className="category-tabs">
+        {[
+          "Elevation",
+          "Floor Plan",
+          "Isometric View",
+          "Interior",
+          "Project View",
+          "Video",
+          "Site Progress",
+        ].map((tab, index) => (
+          <button
+            key={index}
+            className={`tab-btn ${project.activeTab === tab ? "active-tab" : ""}`}
+            onClick={() => setProject((prev) => ({ ...prev, activeTab: tab }))}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* CATEGORY CONTENT */}
+      <div className="category-content">
+        {project.activeTab !== "Video" && (
+          <div className="category-image-grid">
+            {project.files
+              .filter((file) => file.category === project.activeTab)
+              .map((file, index) => (
+                <img key={index} src={file.url} alt={project.activeTab} />
+              ))}
+          </div>
+        )}
+
+        {project.activeTab === "Video" && (
+          <div className="video-section">
+            <video controls width="100%">
+              <source src={project.video} type="video/mp4" />
+            </video>
+          </div>
+        )}
+      </div>
+
+      {/* AMENITIES SECTION */}
+      <div className="amenities-section">
+        <h2 className="amenities-title">Amenities</h2>
+
+        <div className="amenities-grid">
+          <div className="amenity-item"><MdCameraswitch size={50} color="#002060" /><p>CCTV</p></div>
+          <div className="amenity-item"><GiBatteryPack size={50} color="#002060" /><p>Inverter</p></div>
+          <div className="amenity-item"><GiStreetLight size={50} color="#002060" /><p>Street Light</p></div>
+          <div className="amenity-item"><MdSecurity size={50} color="#002060" /><p>Security</p></div>
+          <div className="amenity-item"><GiKitchenKnives size={50} color="#002060" /><p>Modular Kitchen</p></div>
+          <div className="amenity-item"><FaRoad size={50} color="#002060" /><p>Cement Road</p></div>
+          <div className="amenity-item"><FaDumbbell size={50} color="#002060" /><p>Gymnasium</p></div>
+          <div className="amenity-item"><FaBuilding size={50} color="#002060" /><p>Multi Purpose Hall</p></div>
+          <div className="amenity-item"><GiWaterDrop size={50} color="#002060" /><p>RO Water</p></div>
+          <div className="amenity-item"><FaTree size={50} color="#002060" /><p>Avenue Tree</p></div>
+          <div className="amenity-item"><FaStamp size={50} color="#002060" /><p>DTCP Approved</p></div>
+          <div className="amenity-item"><GiKidSlide size={50} color="#002060" /><p>Kids Play Area</p></div>
+        </div>
+      </div>
 
       <FooterJB />
     </div>
