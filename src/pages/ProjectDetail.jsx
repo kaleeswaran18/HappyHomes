@@ -34,7 +34,7 @@ const ProjectDetail = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // ⭐ NEW SEPARATE TAB STATE (Fix for form issue)
+  // Category tab state
   const [activeTab, setActiveTab] = useState("Elevation");
 
   useEffect(() => {
@@ -57,6 +57,26 @@ const ProjectDetail = () => {
   if (!project) return <div className="loading">Loading...</div>;
 
   const allImages = [project.image, ...project.files.map((f) => f.url)];
+
+  /* --------------------- MOBILE SWIPE HANDLER ---------------------- */
+  let startX = 0;
+
+  const handleTouchStart = (e) => {
+    startX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && activeIndex < allImages.length - 1) {
+        setActiveIndex(activeIndex + 1);
+      } else if (diff < 0 && activeIndex > 0) {
+        setActiveIndex(activeIndex - 1);
+      }
+    }
+  };
 
   return (
     <div className="project-detail-page">
@@ -106,52 +126,75 @@ const ProjectDetail = () => {
         </div>
 
         {/* RIGHT SIDEBAR */}
-        <div className="project-sidebar">
-          <div className="enquiry-box">
-            <h3>Project Information</h3>
+        <div className="enquiry-box">
+  <h3>Project Information</h3>
 
-            <div className="project-info">
-              <div className="info-item">
-                <span className="info-label">BHK:</span>
-                <span className="info-value">{project.bhk}</span>
-              </div>
+  <div className="project-info">
+    <div className="info-item">
+      <span className="info-label">BHK:</span>
+      <span className="info-value">{project.bhk}</span>
+    </div>
 
-              <div className="info-item">
-                <span className="info-label">Location:</span>
-                <span className="info-value">{project.location}</span>
-              </div>
-            </div>
+    <div className="info-item">
+      <span className="info-label">Location:</span>
+      <span className="info-value">{project.location}</span>
+    </div>
+  </div>
 
-            <button
-              className="enquire-button"
-              onClick={() => setShowEnquiryForm(true)}
-            >
-              Enquire Now
-            </button>
-          </div>
-        </div>
+  <button
+    className="enquire-button"
+    onClick={() => setShowEnquiryForm(true)}
+  >
+    Enquire Now
+  </button>
+</div>
+
       </div>
 
-      {/* POPUP FULLSCREEN VIEWER */}
+
+      {/* ----------------------------------------------------------- */}
+      {/*             ⭐ MODERN POPUP FULLSCREEN SLIDER               */}
+      {/* ----------------------------------------------------------- */}
+
       {popupOpen && (
         <div className="popup-overlay" onClick={() => setPopupOpen(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={allImages[activeIndex]}
-              alt="Large View"
-              className="popup-image"
-            />
 
-            {/* THUMBNAILS INSIDE POPUP */}
+            {/* CLOSE BUTTON */}
+            <div className="popup-close-btn" onClick={() => setPopupOpen(false)}>
+              ✕
+            </div>
+
+            {/* SLIDER */}
+            <div
+              className="popup-slider-wrapper"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div
+                className="popup-slider"
+                style={{
+                  transform: `translateX(-${activeIndex * 100}%)`
+                }}
+              >
+                {allImages.map((img, i) => (
+                  <div className="popup-slide" key={i}>
+                    <img src={img} alt="popup" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* POPUP THUMBNAILS */}
             <div className="popup-thumbnails">
-              {allImages.map((img, index) => (
+              {allImages.map((img, i) => (
                 <img
-                  key={index}
+                  key={i}
                   src={img}
                   className={`popup-thumb ${
-                    activeIndex === index ? "active-popup-thumb" : ""
+                    activeIndex === i ? "active-popup-thumb" : ""
                   }`}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => setActiveIndex(i)}
                   alt="Popup Thumbnail"
                 />
               ))}
@@ -169,7 +212,7 @@ const ProjectDetail = () => {
         />
       )}
 
-      {/* ⭐ CATEGORY TABS */}
+      {/* CATEGORY TABS */}
       <div className="category-tabs">
         {[
           "Elevation",
@@ -190,7 +233,7 @@ const ProjectDetail = () => {
         ))}
       </div>
 
-      {/* ⭐ CATEGORY CONTENT */}
+      {/* CATEGORY CONTENT */}
       <div className="category-content">
         {activeTab !== "Video" && (
           <div className="category-image-grid">
@@ -211,7 +254,7 @@ const ProjectDetail = () => {
         )}
       </div>
 
-      {/* AMENITIES SECTION */}
+      {/* AMENITIES */}
       <div className="amenities-section">
         <h2 className="amenities-title">Amenities</h2>
 
