@@ -34,6 +34,9 @@ const ProjectDetail = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // ⭐ NEW SEPARATE TAB STATE (Fix for form issue)
+  const [activeTab, setActiveTab] = useState("Elevation");
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -129,7 +132,7 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      {/* POPUP SLIDER (NO ARROWS — ONLY THUMBNAILS) */}
+      {/* POPUP FULLSCREEN VIEWER */}
       {popupOpen && (
         <div className="popup-overlay" onClick={() => setPopupOpen(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
@@ -139,7 +142,7 @@ const ProjectDetail = () => {
               className="popup-image"
             />
 
-            {/* POPUP THUMBNAILS */}
+            {/* THUMBNAILS INSIDE POPUP */}
             <div className="popup-thumbnails">
               {allImages.map((img, index) => (
                 <img
@@ -157,7 +160,16 @@ const ProjectDetail = () => {
         </div>
       )}
 
-      {/* CATEGORY TABS */}
+      {/* ENQUIRY FORM */}
+      {showEnquiryForm && (
+        <EnquiryForm
+          title={`Enquire About ${project.name}`}
+          subtitle={project.location}
+          onClose={() => setShowEnquiryForm(false)}
+        />
+      )}
+
+      {/* ⭐ CATEGORY TABS */}
       <div className="category-tabs">
         {[
           "Elevation",
@@ -170,27 +182,27 @@ const ProjectDetail = () => {
         ].map((tab, index) => (
           <button
             key={index}
-            className={`tab-btn ${project.activeTab === tab ? "active-tab" : ""}`}
-            onClick={() => setProject((prev) => ({ ...prev, activeTab: tab }))}
+            className={`tab-btn ${activeTab === tab ? "active-tab" : ""}`}
+            onClick={() => setActiveTab(tab)}
           >
             {tab}
           </button>
         ))}
       </div>
 
-      {/* CATEGORY CONTENT */}
+      {/* ⭐ CATEGORY CONTENT */}
       <div className="category-content">
-        {project.activeTab !== "Video" && (
+        {activeTab !== "Video" && (
           <div className="category-image-grid">
             {project.files
-              .filter((file) => file.category === project.activeTab)
+              .filter((file) => file.category === activeTab)
               .map((file, index) => (
-                <img key={index} src={file.url} alt={project.activeTab} />
+                <img key={index} src={file.url} alt={activeTab} />
               ))}
           </div>
         )}
 
-        {project.activeTab === "Video" && (
+        {activeTab === "Video" && (
           <div className="video-section">
             <video controls width="100%">
               <source src={project.video} type="video/mp4" />
