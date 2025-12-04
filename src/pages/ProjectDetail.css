@@ -213,7 +213,7 @@
   gap: 12px;
   padding: 0 20px;
   overflow-x: auto;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .tab-btn {
@@ -408,4 +408,17 @@
     grid-template-columns: repeat(2, 1fr); /* MOBILE 2 COLUMNS */
     gap: 20px;
   }
+}
+.category-tabs {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
+  padding: 0 20px;
+  overflow-x: auto;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge */
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
 }
