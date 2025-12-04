@@ -4,7 +4,7 @@ import IconButton from "./IconButton";
 import Modal from "./Modal";
 import Loader from "./Loader";
 import Toast from "./Toast";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 
 const DataTable = ({ columns, rows, title }) => {
@@ -30,12 +30,18 @@ const DataTable = ({ columns, rows, title }) => {
   const [projectNamesAddForm, setProjectNamesAddForm] = useState([]);
   const [projectNamesMultiUpload, setProjectNamesMultiUpload] = useState([]);
 
+  // Extra popup for ProjectHouse multiple delete
+  const [photoPopup, setPhotoPopup] = useState(false);
+  const [photoList, setPhotoList] = useState([]);
+  const [selectedProjectId, setSelectedProjectId] = useState("");
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
+
   // Extra popup for ProjectHouse
   const [housePopup, setHousePopup] = useState(false);
   const [houseProject, setHouseProject] = useState("");
   const [houseFiles, setHouseFiles] = useState([]);
 
-  // ============= FETCH PROJECT NAMES FOR BOTH PURPOSES ===========
+  // FETCH PROJECT NAMES
   useEffect(() => {
     const fetchAddFormNames = async () => {
       try {
@@ -63,7 +69,6 @@ const DataTable = ({ columns, rows, title }) => {
       fetchAddFormNames();
       fetchMultiUploadNames();
     }
-
   }, [title]);
 
   // Detect file type
@@ -255,7 +260,7 @@ const DataTable = ({ columns, rows, title }) => {
     }
   };
 
-  // DELETE
+  // DELETE MAIN ITEM
   const askDelete = (row) => {
     setToDelete(row);
     setConfirmOpen(true);
@@ -267,7 +272,7 @@ const DataTable = ({ columns, rows, title }) => {
     const res = await sendDeleteRequest(toDelete);
 
     if (res.statuscode === 200) {
-      window.location.reload(); 
+      window.location.reload();
       await fetchData();
       showToast("Deleted successfully", "success");
     } else showToast("Delete failed", "danger");
@@ -307,13 +312,10 @@ const DataTable = ({ columns, rows, title }) => {
       } else if (title === "Contact") {
         apiUrl = `${base}/deletecontact`;
         formData.append("_id", item._id);
-      }
-      else if (title === "counterupdate") {
+      } else if (title === "counterupdate") {
         apiUrl = `${base}/deletecounter`;
         formData.append("_id", item._id);
       }
-
-   
 
       const res = await axios.post(apiUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -325,92 +327,138 @@ const DataTable = ({ columns, rows, title }) => {
     }
   };
 
+  // 🆕 OPEN DELETE PHOTOS POPUP (MULTI SELECT)
+  const openDeletePhotos = (row) => {
+    setSelectedProjectId(row._id);
+
+    const photos = row.photos || row.images || row.files || [];
+
+    if (Array.isArray(photos)) {
+      setPhotoList(photos);
+    } else if (row.file) {
+      setPhotoList([row.file]);
+    } else {
+      setPhotoList([]);
+    }
+
+    setSelectedPhotos([]);
+    setPhotoPopup(true);
+  };
+
+  // 🆕 SELECT / UNSELECT PHOTO
+  const toggleSelectPhoto = (photo) => {
+    setSelectedPhotos((prev) => {
+      if (prev.includes(photo)) {
+        return prev.filter((p) => p !== photo);
+      } else {
+        return [...prev, photo];
+      }
+    });
+  };
+
+  // 🆕 DELETE SINGLE PHOTO
+  const deleteSinglePhoto = async (photo) => {
+    try {
+      const formData = new FormData();
+      formData.append("_id", selectedProjectId);
+      formData.append("url", photo.url || photo);
+
+      await axios.post(
+        "http://localhost:6001/product/deleteOneHousePhoto",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 🆕 DELETE SELECTED PHOTOS
+  const deleteSelectedPhotos = async () => {
+    for (let photo of selectedPhotos) {
+      await deleteSinglePhoto(photo);
+    }
+
+    showToast("Selected photos deleted", "success");
+    fetchData();
+    setPhotoPopup(false);
+  };
 
   // FORM UI
-// FORM UI
-const renderForm = () => (
-  <div className="form-grid">
-    {columns.map((c) => (
-      <div key={c.key}>
-        <label>{c.label}</label>
+  const renderForm = () => (
+    <div className="form-grid">
+      {columns.map((c) => (
+        <div key={c.key}>
+          <label>{c.label}</label>
 
-        {/* SELECT FIELD */}
-        {fieldTypes[c.key] === "select" ? (
-          <select
-            className="admin-select"
-            value={draft[c.key] ?? ""}
-            onChange={(e) =>
-              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-            }
-          >
-            <option value="">-- Select Project --</option>
-            {projectNamesAddForm.map((p) => (
-              <option key={p._id} value={p.name}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        ) : fieldTypes[c.key] === "file" ? (
-          
-          /* FILE UPLOAD */
-          <div className="file-upload-box">
-            <label className="file-upload-label">
-              <span className="upload-icon">📁</span>
-              <span>Click to upload file</span>
+          {fieldTypes[c.key] === "select" ? (
+            <select
+              className="admin-select"
+              value={draft[c.key] ?? ""}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+              }
+            >
+              <option value="">-- Select Project --</option>
+              {projectNamesAddForm.map((p) => (
+                <option key={p._id} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          ) : fieldTypes[c.key] === "file" ? (
+            <div className="file-upload-box">
+              <label className="file-upload-label">
+                <span className="upload-icon">📁</span>
+                <span>Click to upload file</span>
 
-              <input
-                type="file"
-                accept="*/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setDraft((d) => ({ ...d, file }));
-                    setPreviewUrl(URL.createObjectURL(file));
-                    setPreviewPopup(true);
-                  }
-                }}
-              />
-            </label>
+                <input
+                  type="file"
+                  accept="*/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setDraft((d) => ({ ...d, file }));
+                      setPreviewUrl(URL.createObjectURL(file));
+                      setPreviewPopup(true);
+                    }
+                  }}
+                />
+              </label>
 
-            {draft.file && (
-              <p className="file-name">
-                {draft.file instanceof File ? draft.file.name : "Existing File"}
-              </p>
-            )}
-          </div>
-
-        ) : 
-
-        /*************  TEXTAREA CONDITION HERE  *************/
-        c.key.toLowerCase().includes("description") ||
-        c.key.toLowerCase().includes("text") ||
-        c.key.toLowerCase().includes("message") ||
-        c.key.toLowerCase().includes("about") ? (
-          <textarea
-            className="admin-textarea"
-            rows={4}
-            value={draft[c.key] ?? ""}
-            onChange={(e) =>
-              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-            }
-          ></textarea>
-
-        ) : (
-
-          /************* DEFAULT TEXT INPUT *************/
-          <input
-            type="text"
-            value={draft[c.key] ?? ""}
-            onChange={(e) =>
-              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-            }
-          />
-        )}
-      </div>
-    ))}
-  </div>
-);
-
+              {draft.file && (
+                <p className="file-name">
+                  {draft.file instanceof File
+                    ? draft.file.name
+                    : "Existing File"}
+                </p>
+              )}
+            </div>
+          ) : c.key.toLowerCase().includes("description") ||
+            c.key.toLowerCase().includes("text") ||
+            c.key.toLowerCase().includes("message") ||
+            c.key.toLowerCase().includes("about") ? (
+            <textarea
+              className="admin-textarea"
+              rows={4}
+              value={draft[c.key] ?? ""}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+              }
+            ></textarea>
+          ) : (
+            <input
+              type="text"
+              value={draft[c.key] ?? ""}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+              }
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
 
   const showToast = (msg, type) => {
     setToast({ message: msg, type });
@@ -418,8 +466,6 @@ const renderForm = () => (
 
   return (
     <div className="admin-card table-card fade-in">
-
-      {/* SEARCH + ADD */}
       <div className="table-toolbar">
         <input
           className="search-modern"
@@ -435,7 +481,6 @@ const renderForm = () => (
           onClick={openAdd}
         />
 
-        {/* EXTRA BUTTON FOR PROJECT HOUSE */}
         {title === "ProjectHouse" && (
           <IconButton
             icon={FaPlus}
@@ -508,6 +553,16 @@ const renderForm = () => (
                       variant="danger"
                       onClick={() => askDelete(r)}
                     />
+
+                    {/* 🆕 DELETE PHOTOS BUTTON */}
+                    {title === "ProjectHouse" && (
+                      <IconButton
+                        icon={FaTrash}
+                        label="Delete Photos"
+                        variant="danger"
+                        onClick={() => openDeletePhotos(r)}
+                      />
+                    )}
                   </div>
                 </td>
               </tr>
@@ -523,8 +578,16 @@ const renderForm = () => (
           onClose={() => setAddOpen(false)}
           footer={
             <>
-              <IconButton label="Cancel" variant="warning" onClick={() => setAddOpen(false)} />
-              <IconButton label="Add" variant="success" onClick={confirmAdd} />
+              <IconButton
+                label="Cancel"
+                variant="warning"
+                onClick={() => setAddOpen(false)}
+              />
+              <IconButton
+                label="Add"
+                variant="success"
+                onClick={confirmAdd}
+              />
             </>
           }
         >
@@ -539,8 +602,16 @@ const renderForm = () => (
           onClose={() => setEditOpen(false)}
           footer={
             <>
-              <IconButton label="Cancel" variant="warning" onClick={() => setEditOpen(false)} />
-              <IconButton label="Save" variant="success" onClick={confirmEdit} />
+              <IconButton
+                label="Cancel"
+                variant="warning"
+                onClick={() => setEditOpen(false)}
+              />
+              <IconButton
+                label="Save"
+                variant="success"
+                onClick={confirmEdit}
+              />
             </>
           }
         >
@@ -555,8 +626,16 @@ const renderForm = () => (
           onClose={() => setConfirmOpen(false)}
           footer={
             <>
-              <IconButton label="Cancel" variant="warning" onClick={() => setConfirmOpen(false)} />
-              <IconButton label="Delete" variant="danger" onClick={confirmDelete} />
+              <IconButton
+                label="Cancel"
+                variant="warning"
+                onClick={() => setConfirmOpen(false)}
+              />
+              <IconButton
+                label="Delete"
+                variant="danger"
+                onClick={confirmDelete}
+              />
             </>
           }
         >
@@ -564,14 +643,18 @@ const renderForm = () => (
         </Modal>
       )}
 
-      {/* FILE PREVIEW */}
+      {/* IMAGE PREVIEW */}
       {previewPopup && (
         <Modal
           title="Preview"
           onClose={() => setPreviewPopup(false)}
           footer={
             <>
-              <IconButton label="Close" variant="warning" onClick={() => setPreviewPopup(false)} />
+              <IconButton
+                label="Close"
+                variant="warning"
+                onClick={() => setPreviewPopup(false)}
+              />
             </>
           }
         >
@@ -585,14 +668,96 @@ const renderForm = () => (
         </Modal>
       )}
 
-      {/* MULTI UPLOAD POPUP (PROJECT HOUSE) */}
+      {/* 🆕 DELETE PHOTOS POPUP */}
+      {photoPopup && (
+        <Modal
+          title="Delete Photos"
+          onClose={() => setPhotoPopup(false)}
+          footer={
+            <>
+              <IconButton
+                label="Close"
+                variant="warning"
+                onClick={() => setPhotoPopup(false)}
+              />
+
+              {selectedPhotos.length > 0 && (
+                <IconButton
+                  label={`Delete (${selectedPhotos.length})`}
+                  variant="danger"
+                  onClick={deleteSelectedPhotos}
+                />
+              )}
+            </>
+          }
+        >
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 15 }}>
+            {photoList.length === 0 && <p>No photos found</p>}
+
+            {photoList.map((p, i) => (
+              <div
+                key={i}
+                onClick={() => toggleSelectPhoto(p)}
+                style={{
+                  width: 150,
+                  border: selectedPhotos.includes(p)
+                    ? "3px solid #d9534f"
+                    : "3px solid transparent",
+                  borderRadius: 8,
+                  padding: 5,
+                  cursor: "pointer",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={p.url || p}
+                  style={{
+                    width: "100%",
+                    height: 120,
+                    objectFit: "cover",
+                    borderRadius: 6,
+                  }}
+                />
+
+                {selectedPhotos.includes(p) && (
+                  <FaCheckCircle
+                    color="red"
+                    size={26}
+                    style={{
+                      position: "absolute",
+                      top: 5,
+                      right: 5,
+                    }}
+                  />
+                )}
+
+                <div style={{ textAlign: "center", marginTop: 5 }}>
+                  {selectedPhotos.includes(p) ? (
+                    <span style={{ color: "red", fontWeight: "bold" }}>
+                      Selected
+                    </span>
+                  ) : (
+                    <span style={{ opacity: 0.5 }}>Click to Select</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
+
+      {/* MULTI UPLOAD POPUP */}
       {housePopup && (
         <Modal
           title="Upload Project House Photos"
           onClose={() => setHousePopup(false)}
           footer={
             <>
-              <IconButton label="Cancel" variant="warning" onClick={() => setHousePopup(false)} />
+              <IconButton
+                label="Cancel"
+                variant="warning"
+                onClick={() => setHousePopup(false)}
+              />
 
               <IconButton
                 label="Upload"
