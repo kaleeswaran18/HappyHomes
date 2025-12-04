@@ -5,26 +5,16 @@ import "./ProjectDetail.css";
 import FooterJB from "../components/FooterJB";
 import axios from "axios";
 
-import {
-  MdCameraswitch,
-  MdSecurity,
-} from "react-icons/md";
-
+// Icons
+import { MdCameraswitch, MdSecurity } from "react-icons/md";
 import {
   GiBatteryPack,
   GiStreetLight,
   GiKitchenKnives,
   GiWaterDrop,
-  GiKidSlide
+  GiKidSlide,
 } from "react-icons/gi";
-
-import {
-  FaRoad,
-  FaDumbbell,
-  FaBuilding,
-  FaStamp,
-  FaTree
-} from "react-icons/fa";
+import { FaRoad, FaDumbbell, FaBuilding, FaStamp, FaTree } from "react-icons/fa";
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -34,9 +24,25 @@ const ProjectDetail = () => {
   const [popupOpen, setPopupOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Category tab state
   const [activeTab, setActiveTab] = useState("Elevation");
 
+  // CATEGORY POPUP
+  const [catPopupOpen, setCatPopupOpen] = useState(false);
+  const [catImages, setCatImages] = useState([]);
+  const [catIndex, setCatIndex] = useState(0);
+
+  // TAB → DB key mapping
+  const tabKeyMap = {
+    Elevation: "elevation",
+    "Floor Plan": "floorplan",
+    "Isometric View": "isometric",
+    Interior: "interior",
+    "Project View": "projectview",
+    Video: "video",
+    "Site Progress": "siteprogress",
+  };
+
+  /** Fetch project details */
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -44,43 +50,50 @@ const ProjectDetail = () => {
           "https://samplebuildapi-1.onrender.com/product/getAlprojectsSchema"
         );
 
-        const data = res.data.data.find((p) => p._id === id);
-        setProject(data);
+        const found = res.data.data.find((item) => item._id === id);
+        setProject(found);
       } catch (err) {
-        console.error("API Error:", err);
+        console.log("API Error:", err);
       }
     };
-
     fetchProject();
   }, [id]);
 
   if (!project) return <div className="loading">Loading...</div>;
 
+  /** ALL GALLERY IMAGES */
   const allImages = [project.image, ...project.files.map((f) => f.url)];
 
-  /* --------------------- MOBILE SWIPE HANDLER ---------------------- */
+  /** MAIN POPUP SWIPE */
   let startX = 0;
-
-  const handleTouchStart = (e) => {
-    startX = e.touches[0].clientX;
-  };
+  const handleTouchStart = (e) => (startX = e.touches[0].clientX);
 
   const handleTouchEnd = (e) => {
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
+    const diff = startX - e.changedTouches[0].clientX;
 
     if (Math.abs(diff) > 50) {
-      if (diff > 0 && activeIndex < allImages.length - 1) {
+      if (diff > 0 && activeIndex < allImages.length - 1)
         setActiveIndex(activeIndex + 1);
-      } else if (diff < 0 && activeIndex > 0) {
-        setActiveIndex(activeIndex - 1);
-      }
+      else if (diff < 0 && activeIndex > 0) setActiveIndex(activeIndex - 1);
+    }
+  };
+
+  /** CATEGORY SWIPE */
+  let catStartX = 0;
+  const catTouchStart = (e) => (catStartX = e.touches[0].clientX);
+
+  const catTouchEnd = (e) => {
+    const diff = catStartX - e.changedTouches[0].clientX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && catIndex < catImages.length - 1)
+        setCatIndex(catIndex + 1);
+      else if (diff < 0 && catIndex > 0) setCatIndex(catIndex - 1);
     }
   };
 
   return (
     <div className="project-detail-page">
-
       {/* HERO */}
       <div
         className="project-hero"
@@ -94,13 +107,9 @@ const ProjectDetail = () => {
 
       {/* CONTENT */}
       <div className="container project-detail-content">
-
-        {/* LEFT SECTION */}
+        {/* LEFT GALLERY */}
         <div className="project-main">
-
-          {/* GALLERY */}
           <div className="project-image-gallery">
-
             <div className="main-image">
               <img
                 src={allImages[activeIndex]}
@@ -118,54 +127,41 @@ const ProjectDetail = () => {
                     index === activeIndex ? "active-thumbnail" : ""
                   }`}
                   onClick={() => setActiveIndex(index)}
-                  alt="Thumbnail"
                 />
               ))}
             </div>
           </div>
         </div>
 
-        {/* RIGHT SIDEBAR */}
+        {/* RIGHT INFO */}
         <div className="enquiry-box">
-  <h3>Project Information</h3>
+          <h3>Project Information</h3>
 
-  <div className="project-info">
-    <div className="info-item">
-      <span className="info-label">BHK:</span>
-      <span className="info-value">{project.bhk}</span>
-    </div>
+          <div className="project-info">
+            <div className="info-item">
+              <span className="info-label">BHK:</span>
+              <span className="info-value">{project.bhk}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Location:</span>
+              <span className="info-value">{project.location}</span>
+            </div>
+          </div>
 
-    <div className="info-item">
-      <span className="info-label">Location:</span>
-      <span className="info-value">{project.location}</span>
-    </div>
-  </div>
-
-  <button
-    className="enquire-button"
-    onClick={() => setShowEnquiryForm(true)}
-  >
-    Enquire Now
-  </button>
-</div>
-
+          <button className="enquire-button" onClick={() => setShowEnquiryForm(true)}>
+            Enquire Now
+          </button>
+        </div>
       </div>
 
-
-      {/* ----------------------------------------------------------- */}
-      {/*             ⭐ MODERN POPUP FULLSCREEN SLIDER               */}
-      {/* ----------------------------------------------------------- */}
-
+      {/* MAIN POPUP */}
       {popupOpen && (
         <div className="popup-overlay" onClick={() => setPopupOpen(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-
-            {/* CLOSE BUTTON */}
             <div className="popup-close-btn" onClick={() => setPopupOpen(false)}>
               ✕
             </div>
 
-            {/* SLIDER */}
             <div
               className="popup-slider-wrapper"
               onTouchStart={handleTouchStart}
@@ -173,9 +169,7 @@ const ProjectDetail = () => {
             >
               <div
                 className="popup-slider"
-                style={{
-                  transform: `translateX(-${activeIndex * 100}%)`
-                }}
+                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
               >
                 {allImages.map((img, i) => (
                   <div className="popup-slide" key={i}>
@@ -185,7 +179,6 @@ const ProjectDetail = () => {
               </div>
             </div>
 
-            {/* POPUP THUMBNAILS */}
             <div className="popup-thumbnails">
               {allImages.map((img, i) => (
                 <img
@@ -195,7 +188,93 @@ const ProjectDetail = () => {
                     activeIndex === i ? "active-popup-thumb" : ""
                   }`}
                   onClick={() => setActiveIndex(i)}
-                  alt="Popup Thumbnail"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CATEGORY TABS */}
+      <div className="category-tabs">
+        {Object.keys(tabKeyMap).map((tab, index) => (
+          <button
+            key={index}
+            className={`tab-btn ${activeTab === tab ? "active-tab" : ""}`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* CATEGORY CONTENT */}
+      <div className="category-content">
+        {(() => {
+          const key = tabKeyMap[activeTab];
+          const items = project.categorytab[key] || [];
+
+          if (items.length === 0)
+            return <p className="no-content">No {activeTab} available</p>;
+
+          if (key === "video") {
+            return items.map((vid, i) => (
+              <video key={i} width="100%" controls>
+                <source src={vid.url} type="video/mp4" />
+              </video>
+            ));
+          }
+
+          return (
+            <div className="category-image-grid">
+              {items.map((img, index) => (
+                <img
+                  key={index}
+                  src={img.url}
+                  onClick={() => {
+                    setCatImages(items.map((i) => i.url));
+                    setCatIndex(index);
+                    setCatPopupOpen(true);
+                  }}
+                />
+              ))}
+            </div>
+          );
+        })()}
+      </div>
+
+      {/* CATEGORY POPUP */}
+      {catPopupOpen && (
+        <div className="popup-overlay" onClick={() => setCatPopupOpen(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <div className="popup-close-btn" onClick={() => setCatPopupOpen(false)}>
+              ✕
+            </div>
+
+            <div
+              className="popup-slider-wrapper"
+              onTouchStart={catTouchStart}
+              onTouchEnd={catTouchEnd}
+            >
+              <div
+                className="popup-slider"
+                style={{ transform: `translateX(-${catIndex * 100}%)` }}
+              >
+                {catImages.map((img, i) => (
+                  <div className="popup-slide" key={i}>
+                    <img src={img} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="popup-thumbnails">
+              {catImages.map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  className={`popup-thumb ${i === catIndex ? "active-popup-thumb" : ""}`}
+                  onClick={() => setCatIndex(i)}
                 />
               ))}
             </div>
@@ -212,48 +291,6 @@ const ProjectDetail = () => {
         />
       )}
 
-      {/* CATEGORY TABS */}
-      <div className="category-tabs">
-        {[
-          "Elevation",
-          "Floor Plan",
-          "Isometric View",
-          "Interior",
-          "Project View",
-          "Video",
-          "Site Progress",
-        ].map((tab, index) => (
-          <button
-            key={index}
-            className={`tab-btn ${activeTab === tab ? "active-tab" : ""}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      {/* CATEGORY CONTENT */}
-      <div className="category-content">
-        {activeTab !== "Video" && (
-          <div className="category-image-grid">
-            {project.files
-              .filter((file) => file.category === activeTab)
-              .map((file, index) => (
-                <img key={index} src={file.url} alt={activeTab} />
-              ))}
-          </div>
-        )}
-
-        {activeTab === "Video" && (
-          <div className="video-section">
-            <video controls width="100%">
-              <source src={project.video} type="video/mp4" />
-            </video>
-          </div>
-        )}
-      </div>
-
       {/* AMENITIES */}
       <div className="amenities-section">
         <h2 className="amenities-title">Amenities</h2>
@@ -265,12 +302,12 @@ const ProjectDetail = () => {
           <div className="amenity-item"><MdSecurity size={50} color="#002060" /><p>Security</p></div>
           <div className="amenity-item"><GiKitchenKnives size={50} color="#002060" /><p>Modular Kitchen</p></div>
           <div className="amenity-item"><FaRoad size={50} color="#002060" /><p>Cement Road</p></div>
-          <div className="amenity-item"><FaDumbbell size={50} color="#002060" /><p>Gymnasium</p></div>
-          <div className="amenity-item"><FaBuilding size={50} color="#002060" /><p>Multi Purpose Hall</p></div>
+          <div className="amenity-item"><FaDumbbell size={50} color="#002060" /><p>Gym</p></div>
+          <div className="amenity-item"><FaBuilding size={50} color="#002060" /><p>Hall</p></div>
           <div className="amenity-item"><GiWaterDrop size={50} color="#002060" /><p>RO Water</p></div>
-          <div className="amenity-item"><FaTree size={50} color="#002060" /><p>Avenue Tree</p></div>
-          <div className="amenity-item"><FaStamp size={50} color="#002060" /><p>DTCP Approved</p></div>
-          <div className="amenity-item"><GiKidSlide size={50} color="#002060" /><p>Kids Play Area</p></div>
+          <div className="amenity-item"><FaTree size={50} color="#002060" /><p>Trees</p></div>
+          <div className="amenity-item"><FaStamp size={50} color="#002060" /><p>DTCP</p></div>
+          <div className="amenity-item"><GiKidSlide size={50} color="#002060" /><p>Kids Area</p></div>
         </div>
       </div>
 
