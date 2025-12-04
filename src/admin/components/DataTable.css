@@ -295,3 +295,11 @@ table.admin-table tbody tr:hover {
 .admin-select option {
   padding: 10px;
 }
+.admin-textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  resize: vertical;
+}

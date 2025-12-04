@@ -278,7 +278,7 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendDeleteRequest = async (item) => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
       const formData = new FormData();
 
@@ -327,67 +327,90 @@ const DataTable = ({ columns, rows, title }) => {
 
 
   // FORM UI
-  const renderForm = () => (
-    <div className="form-grid">
-      {columns.map((c) => (
-        <div key={c.key}>
-          <label>{c.label}</label>
+// FORM UI
+const renderForm = () => (
+  <div className="form-grid">
+    {columns.map((c) => (
+      <div key={c.key}>
+        <label>{c.label}</label>
 
-          {fieldTypes[c.key] === "select" ? (
-           <select
-  className="admin-select"
-  value={draft[c.key] ?? ""}
-  onChange={(e) =>
-    setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-  }
->
-  <option value="">-- Select Project --</option>
+        {/* SELECT FIELD */}
+        {fieldTypes[c.key] === "select" ? (
+          <select
+            className="admin-select"
+            value={draft[c.key] ?? ""}
+            onChange={(e) =>
+              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+            }
+          >
+            <option value="">-- Select Project --</option>
+            {projectNamesAddForm.map((p) => (
+              <option key={p._id} value={p.name}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        ) : fieldTypes[c.key] === "file" ? (
+          
+          /* FILE UPLOAD */
+          <div className="file-upload-box">
+            <label className="file-upload-label">
+              <span className="upload-icon">📁</span>
+              <span>Click to upload file</span>
 
-  {projectNamesAddForm.map((p) => (
-    <option key={p._id} value={p.name}>
-      {p.name}
-    </option>
-  ))}
-</select>
-          ) : fieldTypes[c.key] === "file" ? (
-            <div className="file-upload-box">
-              <label className="file-upload-label">
-                <span className="upload-icon">📁</span>
-                <span>Click to upload file</span>
+              <input
+                type="file"
+                accept="*/*"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    setDraft((d) => ({ ...d, file }));
+                    setPreviewUrl(URL.createObjectURL(file));
+                    setPreviewPopup(true);
+                  }
+                }}
+              />
+            </label>
 
-                <input
-                  type="file"
-                  accept="*/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      setDraft((d) => ({ ...d, file }));
-                      setPreviewUrl(URL.createObjectURL(file));
-                      setPreviewPopup(true);
-                    }
-                  }}
-                />
-              </label>
+            {draft.file && (
+              <p className="file-name">
+                {draft.file instanceof File ? draft.file.name : "Existing File"}
+              </p>
+            )}
+          </div>
 
-              {draft.file && (
-                <p className="file-name">
-                  {draft.file instanceof File ? draft.file.name : "Existing File"}
-                </p>
-              )}
-            </div>
-          ) : (
-            <input
-              type="text"
-              value={draft[c.key] ?? ""}
-              onChange={(e) =>
-                setDraft((d) => ({ ...d, [c.key]: e.target.value }))
-              }
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  );
+        ) : 
+
+        /*************  TEXTAREA CONDITION HERE  *************/
+        c.key.toLowerCase().includes("description") ||
+        c.key.toLowerCase().includes("text") ||
+        c.key.toLowerCase().includes("message") ||
+        c.key.toLowerCase().includes("about") ? (
+          <textarea
+            className="admin-textarea"
+            rows={4}
+            value={draft[c.key] ?? ""}
+            onChange={(e) =>
+              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+            }
+          ></textarea>
+
+        ) : (
+
+          /************* DEFAULT TEXT INPUT *************/
+          <input
+            type="text"
+            value={draft[c.key] ?? ""}
+            onChange={(e) =>
+              setDraft((d) => ({ ...d, [c.key]: e.target.value }))
+            }
+          />
+        )}
+      </div>
+    ))}
+  </div>
+);
+
 
   const showToast = (msg, type) => {
     setToast({ message: msg, type });
