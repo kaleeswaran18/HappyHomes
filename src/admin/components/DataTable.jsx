@@ -105,9 +105,22 @@ const DataTable = ({ columns, rows, title }) => {
     columns.forEach((c) => {
       const key = c.key.toLowerCase();
 
-      if (key.includes("image") || key.includes("file") || key.includes("media")) {
-        map[c.key] = "file";
-      } else if (key === "projectplace") {
+      if (
+  key.includes("image") ||
+  key.includes("file") ||
+  key.includes("media") ||
+  [
+    "elevation",
+    "floorplan",
+    "isometric",
+    "interior",
+    "projectview",
+    "video",
+    "siteprogress"
+  ].includes(key)
+) {
+  map[c.key] = "file";
+} else if (key === "projectplace" || key === "projectsite") {
         map[c.key] = "select";
       } else {
         map[c.key] = "text";
@@ -118,42 +131,95 @@ const DataTable = ({ columns, rows, title }) => {
   }, [columns]);
 
   // Fetch data by title
-  const fetchData = async () => {
-    try {
-      const base = "https://samplebuildapi-1.onrender.com/product";
-      let apiUrl = "";
+ const fetchData = async () => {
+  try {
+    const base = "https://samplebuildapi-1.onrender.com/product";
+    let apiUrl = "";
 
-      if (title === "Home Content") apiUrl = `${base}/slidersget`;
-      else if (title === "Projects") apiUrl = `${base}/getprojectsSchema`;
-      else if (title === "ProjectHouse") apiUrl = `${base}/getAlprojectsSchema`;
-      else if (title === "Testimonials") apiUrl = `${base}/getTestimonials`;
-      else if (title === "Careers") apiUrl = `${base}/getcarrer`;
-      else if (title === "Leadership Team") apiUrl = `${base}/LeadershipgetSchema`;
-      else if (title === "Services") apiUrl = `${base}/getserviceSchema`;
-      else if (title === "Contact") apiUrl = `${base}/getcontact`;
-      else if (title === "enquireForm") apiUrl = `${base}/getform`;
-      else if (title === "media") apiUrl = `${base}/gethomeimage`;
-      else if (title === "founder") apiUrl = `${base}/FoundergetSchema`;
-      else apiUrl = `${base}/common/get`;
+    if (title === "Home Content") apiUrl = `${base}/slidersget`;
+    else if (title === "Projects") apiUrl = `${base}/getprojectsSchema`;
+    else if (title === "ProjectHouse") apiUrl = `${base}/getAlprojectsSchema`;
+    else if (title === "Testimonials") apiUrl = `${base}/getTestimonials`;
+    else if (title === "Careers") apiUrl = `${base}/getcarrer`;
+    else if (title === "Leadership Team") apiUrl = `${base}/LeadershipgetSchema`;
+    else if (title === "Services") apiUrl = `${base}/getserviceSchema`;
+    else if (title === "Contact") apiUrl = `${base}/getcontact`;
+    else if (title === "enquireForm") apiUrl = `${base}/getform`;
+    else if (title === "media") apiUrl = `${base}/gethomeimage`;
+    else if (title === "founder") apiUrl = `${base}/FoundergetSchema`;
+ else if (title === "categorytab") apiUrl = `${base}/getAlprojectsSchema`;
 
-      const res = await axios.get(apiUrl);
-      let data = res.data.data || res.data;
+    // categorytab
+    else apiUrl = `${base}/common/get`;
 
-      if (title === "Home Content") {
-        const raw = res.data.data;
-        if (Array.isArray(raw) && raw.length > 0 && raw[0].images) {
-          data = raw[0].images.map((img) => ({
-            file: img,
-            _id: raw[0]._id,
-          }));
-        }
+    const res = await axios.get(apiUrl);
+    let data = res.data.data || res.data;
+
+    // HOME CONTENT SPECIAL CASE
+    if (title === "Home Content") {
+      const raw = res.data.data;
+      if (Array.isArray(raw) && raw.length > 0 && raw[0].images) {
+        data = raw[0].images.map((img) => ({
+          file: img,
+          _id: raw[0]._id,
+        }));
       }
-
-      setInternalRows(data);
-    } catch (err) {
-      console.error("FETCH DATA ERROR:", err);
     }
-  };
+
+    // UNIVERSAL IMAGE → FILE MAPPING
+    if (
+      ["Projects", "ProjectHouse", "Testimonials", "Leadership Team", "Services", "founder",'media']
+        .includes(title)
+    ) {
+      data = data.map((item) => {
+        if (item.image) {
+          item.file = item.image;
+        }
+        if (item.media) {
+          item.file = item.media.url || item.media;
+        }
+        if (Array.isArray(item.images) && item.images.length > 0) {
+          item.file = item.images[0].url || item.images[0];
+        }
+        return item;
+      });
+    }
+// ⭐ CATEGORYTAB SPECIAL MAPPING
+if (title === "categorytab") {
+  data = data.map((item) => {
+    const row = {
+      House: item.name,
+      Place: item.projectPlace,
+      _id:item._id,
+      projectplaceid:item.projectPlaceid
+    };
+
+    const categories = [
+      "elevation",
+      "floorplan",
+      "isometric",
+      "interior",
+      "projectview",
+      "video",
+      "siteprogress"
+    ];
+
+    categories.forEach((cat) => {
+      const files = item.categorytab?.[cat];
+      row[cat] = Array.isArray(files) && files.length > 0
+        ? files[0].url
+        : "";
+    });
+
+    return row;
+  });
+}
+    setInternalRows(data);
+  } catch (err) {
+    console.error("FETCH DATA ERROR:", err);
+  }
+};
+
 
   useEffect(() => {
     fetchData();
@@ -178,7 +244,7 @@ const DataTable = ({ columns, rows, title }) => {
 
   const sendAddRequest = async (data) => {
     try {
-      const base = "https://samplebuildapi-1.onrender.com/product";
+      const base = "http://localhost:6001/product";
       let apiUrl = "";
 
       if (title === "Home Content") apiUrl = `${base}/sliderscreate`;
@@ -192,6 +258,8 @@ const DataTable = ({ columns, rows, title }) => {
       else if (title === "Contact") apiUrl = `${base}/createcontact`;
       else if (title === "enquireForm") apiUrl = `${base}/createform`;
       else if (title === "founder") apiUrl = `${base}/Foundercreate`;
+      
+     
       else apiUrl = `${base}/common/add`;
 
       const formData = new FormData();
@@ -232,33 +300,72 @@ const DataTable = ({ columns, rows, title }) => {
     } else showToast("Update failed", "danger");
   };
 
-  const sendEditRequest = async (data) => {
-    try {
-      const base = "https://samplebuildapi-1.onrender.com/product";
-      let apiUrl = "";
+ const sendEditRequest = async (data) => {
+  try {
+    const base = "http://localhost:6001/product";
+    let apiUrl = "";
 
-      if (title === "Projects") apiUrl = `${base}/updateprojectsSchema`;
-      else if (title === "ProjectHouse") apiUrl = `${base}/updateAlprojectsSchema`;
-      else if (title === "Testimonials") apiUrl = `${base}/updateTestimonials`;
-      else if (title === "Careers") apiUrl = `${base}/updatecarrer`;
-      else if (title === "Leadership Team") apiUrl = `${base}/Leadershipupdate`;
-      else if (title === "Services") apiUrl = `${base}/updateservice`;
-      else if (title === "Contact") apiUrl = `${base}/updatecontact`;
-      else if (title === "founder") apiUrl = `${base}/FounderupdateSchema`;
-      else apiUrl = `${base}/common/update`;
+    if (title === "Projects") apiUrl = `${base}/updateprojectsSchema`;
+    else if (title === "ProjectHouse") apiUrl = `${base}/updateAlprojectsSchema`;
+    else if (title === "Testimonials") apiUrl = `${base}/updateTestimonials`;
+    else if (title === "Careers") apiUrl = `${base}/updatecarrer`;
+    else if (title === "Leadership Team") apiUrl = `${base}/Leadershipupdate`;
+    else if (title === "Services") apiUrl = `${base}/updateservice`;
+    else if (title === "Contact") apiUrl = `${base}/updatecontact`;
+    else if (title === "founder") apiUrl = `${base}/FounderupdateSchema`;
+
+    // ⭐ SPECIAL CASE FOR CATEGORY TAB ⭐
+    else if (title === "categorytab") {
+      apiUrl = `${base}/CategoryFile`;
 
       const formData = new FormData();
-      for (let key in data) formData.append(key, data[key]);
+
+      // Always send id
+      formData.append("_id", data._id);
+      formData.append("projectPlaceid", data.projectPlaceid);
+
+      // Only these keys should send File
+      const categoryKeys = [
+        "elevation",
+        "floorplan",
+        "isometric",
+        "interior",
+        "projectview",
+        "video",
+        "siteprogress"
+      ];
+
+      categoryKeys.forEach((key) => {
+        if (data[key] instanceof File) {
+          formData.append(key, data[key]);  // send ONLY binary files
+        }
+      });
 
       const res = await axios.put(apiUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      return res.data;
-    } catch {
-      return { statuscode: 500 };
+      return res.data; // return, stop normal flow
     }
-  };
+
+    // ⭐ NORMAL FLOW FOR OTHER TITLES ⭐
+    else apiUrl = `${base}/common/update`;
+
+    // your original code remains same for non-category
+    const formData = new FormData();
+    for (let key in data) formData.append(key, data[key]);
+
+    const res = await axios.put(apiUrl, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data;
+
+  } catch (err) {
+    return { statuscode: 500 };
+  }
+};
+
 
   // DELETE MAIN ITEM
   const askDelete = (row) => {
@@ -408,32 +515,35 @@ const DataTable = ({ columns, rows, title }) => {
             </select>
           ) : fieldTypes[c.key] === "file" ? (
             <div className="file-upload-box">
-              <label className="file-upload-label">
-                <span className="upload-icon">📁</span>
-                <span>Click to upload file</span>
+  <label className="file-upload-label">
+    <span className="upload-icon">📁</span>
+    <span>Click to upload file</span>
 
-                <input
-                  type="file"
-                  accept="*/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      setDraft((d) => ({ ...d, file }));
-                      setPreviewUrl(URL.createObjectURL(file));
-                      setPreviewPopup(true);
-                    }
-                  }}
-                />
-              </label>
+    <input
+      type="file"
+      accept="*/*"
+      onChange={(e) => {
+        const file = e.target.files[0];
+        if (file) {
+          setDraft((d) => ({
+            ...d,
+            [c.key]: file,   // correct storage
+          }));
+          setPreviewUrl(URL.createObjectURL(file));
+          setPreviewPopup(true);
+        }
+      }}
+    />
+  </label>
 
-              {draft.file && (
-                <p className="file-name">
-                  {draft.file instanceof File
-                    ? draft.file.name
-                    : "Existing File"}
-                </p>
-              )}
-            </div>
+  {draft[c.key] && (
+    <p className="file-name">
+      {draft[c.key] instanceof File
+        ? draft[c.key].name
+        : "Existing File"}
+    </p>
+  )}
+</div>
           ) : c.key.toLowerCase().includes("description") ||
             c.key.toLowerCase().includes("text") ||
             c.key.toLowerCase().includes("message") ||
@@ -507,67 +617,69 @@ const DataTable = ({ columns, rows, title }) => {
             </tr>
           </thead>
 
-          <tbody>
-            {filtered.map((r, idx) => (
-              <tr key={idx}>
-                {columns.map((c) => {
-                  const value = r[c.key];
+         <tbody>
+  {filtered.map((r, idx) => (
+    <tr key={idx}>
+      {columns.map((c) => {
+        const value = r[c.key];
 
-                  if (fieldTypes[c.key] !== "file") {
-                    return <td key={c.key}>{String(value)}</td>;
-                  }
+        // If normal text field
+        if (fieldTypes[c.key] !== "file") {
+          return <td key={c.key}>{String(value)}</td>;
+        }
 
-                  const url = value?.url || value;
-                  const type = value?.type;
+        // SAFE URL handling
+        const url =
+          typeof value === "string"
+            ? value
+            : value?.url;
 
-                  const fileType =
-                    typeof url === "string"
-                      ? detectFileType(url, type)
-                      : "unknown";
+        const fileType = url ? detectFileType(url) : "unknown";
 
-                  return (
-                    <td key={c.key}>
-                      {fileType === "image" ? (
-                        <img src={url} className="table-image" alt="" />
-                      ) : fileType === "video" ? (
-                        <video src={url} className="table-video" controls />
-                      ) : (
-                        <span style={{ opacity: 0.6 }}>No File</span>
-                      )}
-                    </td>
-                  );
-                })}
+        return (
+          <td key={c.key}>
+            {fileType === "image" ? (
+              <img src={url} className="table-image" alt="" />
+            ) : fileType === "video" ? (
+              <video src={url} className="table-video" controls />
+            ) : (
+              <span style={{ opacity: 0.6 }}>No File</span>
+            )}
+          </td>
+        );
+      })}
 
-                <td>
-                  <div className="action-buttons">
-                    <IconButton
-                      icon={FaEdit}
-                      label="Edit"
-                      variant="warning"
-                      onClick={() => openEdit(r)}
-                    />
+      <td>
+        <div className="action-buttons">
+          <IconButton
+            icon={FaEdit}
+            label="Edit"
+            variant="warning"
+            onClick={() => openEdit(r)}
+          />
 
-                    <IconButton
-                      icon={FaTrash}
-                      label="Delete"
-                      variant="danger"
-                      onClick={() => askDelete(r)}
-                    />
+          <IconButton
+            icon={FaTrash}
+            label="Delete"
+            variant="danger"
+            onClick={() => askDelete(r)}
+          />
 
-                    {/* 🆕 DELETE PHOTOS BUTTON */}
-                    {title === "ProjectHouse" && (
-                      <IconButton
-                        icon={FaTrash}
-                        label="Delete Photos"
-                        variant="danger"
-                        onClick={() => openDeletePhotos(r)}
-                      />
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {title === "ProjectHouse" && (
+            <IconButton
+              icon={FaTrash}
+              label="Delete Photos"
+              variant="danger"
+              onClick={() => openDeletePhotos(r)}
+            />
+          )}
+          
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </div>
 

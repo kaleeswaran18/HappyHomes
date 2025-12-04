@@ -44,7 +44,7 @@ import ContactAdmin from './admin/pages/ContactAdmin';
 import NavigationAdmin from './admin/pages/NavigationAdmin';
 import CounterupdateAdmin from './admin/pages/counterupdate';
 import SeoAdmin from './admin/pages/SeoAdmin';
-
+import Categorytab from './admin/pages/Categorytab';
 function App() {
   return (
     <Router>
@@ -94,6 +94,8 @@ function App() {
                 <Route path="contact" element={<ContactAdmin />} />
                 <Route path="navigation" element={<NavigationAdmin />} />
                 <Route path="counterupdate" element={<CounterupdateAdmin />} />
+                 <Route path="categorytab" element={<Categorytab />} />
+                
                 <Route path="seo" element={<SeoAdmin />} />
 
               </Route>

@@ -18,12 +18,14 @@ const Sidebar = () => {
         <div className="nav-group-title">Overview</div>
         <NavItem to="/admin" label="Dashboard" />
         <NavItem to="/admin/home" label="Home Content" />
+        <NavItem to="/admin/categorytab" label="categorytab" />
+        
       </div>
 
       <div className="nav-group">
         <div className="nav-group-title">Content</div>
         <NavItem to="/admin/projects" label="Projects" />
-        <NavItem to="/admin/completed" label="ProjectsHouse" />
+      <NavItem to="/admin/completed" label="ProjectsHouse" />
         <NavItem to="/admin/testimonials" label="Testimonials" />
         <NavItem to="/admin/blog" label="Media" />
         <NavItem to="/admin/careers" label="Careers" />

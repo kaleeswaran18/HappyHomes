@@ -8,7 +8,7 @@ export const SECTIONS = {
     title: 'Services',
     columns: [
       { key: 'name', label: 'name' },
-     { key: 'image', label: 'Image' },
+     { key: 'file', label: 'Image' },
       { key: 'role', label: 'role' }
      
     ],
@@ -65,7 +65,7 @@ export const SECTIONS = {
        { key: 'name', label: 'Name' },
       { key: 'location', label: 'location' },
       { key: 'bhk', label: 'bhk' },
-      { key: 'image', label: 'file' },
+      { key: 'file', label: 'file' },
       
       
     ],
@@ -85,7 +85,7 @@ export const SECTIONS = {
       { key: 'name', label: 'Name' },
       { key: 'role', label: 'Role' },
         { key: 'description', label: 'description' },
-       { key: 'image', label: 'Image' },
+       { key: 'file', label: 'Image' },
 
   
     ],
@@ -97,7 +97,7 @@ export const SECTIONS = {
       { key: 'name', label: 'Name' },
       { key: 'role', label: 'Role' },
         { key: 'description', label: 'description' },
-        { key: 'image', label: 'file' },
+        { key: 'file', label: 'file' },
 
   
     ],
@@ -131,19 +131,38 @@ export const SECTIONS = {
     title: 'Projects',
     columns: [
       { key: 'name', label: 'Name' },
+      
       { key: 'location', label: 'location' },
       { key: 'bhk', label: 'bhk' },
-       { key: 'image', label: 'file' },
+       { key: 'file', label: 'file' },
        { key: 'description', label: 'description' },
        
       
     ],
     rows: [],
   },
+
+ categorytab: {
+  title: 'categorytab',
+
+  columns: [
+     { key: 'House', label: 'House' },
+     { key: 'Place', label: 'Place' },
+    { key: 'elevation', label: 'Elevation' },
+    { key: 'floorplan', label: 'Floor Plan' },
+    { key: 'isometric', label: 'Isometric View' },
+    { key: 'interior', label: 'Interior' },
+    { key: 'projectview', label: 'Project View' },
+    { key: 'video', label: 'Video' },
+    { key: 'siteprogress', label: 'Site Progress' },
+  ],
+
+  rows: [],
+},
   media: {
     title: 'media',
     columns: [
-      { key: 'image', label: 'file' },
+      { key: 'file', label: 'file' },
      
     ],
     rows: [],
@@ -157,7 +176,7 @@ export const SECTIONS = {
       { key: 'project', label: 'project' },
        { key: 'rating', label: 'rating' },
         { key: 'text', label: 'text' },
-        { key: 'image', label: 'file' },
+        { key: 'file', label: 'file' },
     ],
     rows: [],
   },

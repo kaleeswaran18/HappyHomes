@@ -19,7 +19,7 @@ const titles = {
   '/admin/investors': 'Investors',
   '/admin/enquireForm': 'EnquireForm',
   '/admin/contact': 'Contact Info',
-  
+  '/admin/categorytab':"categorytab",
   '/admin/counterupdate': 'counterupdate',
   '/admin/seo': 'SEO & Metadata',
   '/admin/enquiryCustomer':'/admin/enquiryCustomer'
