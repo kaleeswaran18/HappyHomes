@@ -244,7 +244,7 @@ if (title === "categorytab") {
 
   const sendAddRequest = async (data) => {
     try {
-      const base = "http://localhost:6001/product";
+      const base = "https://samplebuildapi-1.onrender.com/product";
       let apiUrl = "";
 
       if (title === "Home Content") apiUrl = `${base}/sliderscreate`;
@@ -302,7 +302,7 @@ if (title === "categorytab") {
 
  const sendEditRequest = async (data) => {
   try {
-    const base = "http://localhost:6001/product";
+    const base = "https://samplebuildapi-1.onrender.com/product";
     let apiUrl = "";
 
     if (title === "Projects") apiUrl = `${base}/updateprojectsSchema`;
@@ -471,7 +471,7 @@ if (title === "categorytab") {
       formData.append("url", photo.url || photo);
 
       await axios.post(
-        "http://localhost:6001/product/deleteOneHousePhoto",
+        "https://samplebuildapi-1.onrender.com/product",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -584,12 +584,14 @@ if (title === "categorytab") {
           onChange={(e) => setQuery(e.target.value)}
         />
 
-        <IconButton
-          icon={FaPlus}
-          label="Add"
-          variant="success"
-          onClick={openAdd}
-        />
+       {title !== "enquireForm" && title !== "categorytab" && title !== "founder" &&  (
+  <IconButton
+    icon={FaPlus}
+    label="Add"
+    variant="success"
+    onClick={openAdd}
+  />
+)} 
 
         {title === "ProjectHouse" && (
           <IconButton
@@ -651,13 +653,15 @@ if (title === "categorytab") {
 
       <td>
         <div className="action-buttons">
+
+          {title !== "Home Content" &&  (
           <IconButton
             icon={FaEdit}
             label="Edit"
             variant="warning"
             onClick={() => openEdit(r)}
           />
-
+          )}
           <IconButton
             icon={FaTrash}
             label="Delete"
