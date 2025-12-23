@@ -7,7 +7,7 @@ const TypingAnimation = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ✅ useMemo ensures the array isn't re-created every render
-  const words = useMemo(() => ["Happy Homes", "Since 1993"], []);
+  const words = useMemo(() => ["Happy Homes", "Best for All Kinds of People"], []);
 
   useEffect(() => {
     const currentWord = words[currentWordIndex];

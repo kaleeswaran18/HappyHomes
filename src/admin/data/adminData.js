@@ -136,7 +136,7 @@ export const SECTIONS = {
       { key: 'bhk', label: 'bhk' },
        { key: 'file', label: 'file' },
        { key: 'description', label: 'description' },
-       
+       { key: 'video', label: 'video' },
       
     ],
     rows: [],

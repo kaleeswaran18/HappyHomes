@@ -6,11 +6,13 @@ import Loader from "./Loader";
 import Toast from "./Toast";
 import { FaPlus, FaEdit, FaTrash, FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const DataTable = ({ columns, rows, title }) => {
   const [query, setQuery] = useState("");
   const [internalRows, setInternalRows] = useState(rows || []);
-
+const navigate = useNavigate();
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -451,7 +453,20 @@ if (title === "categorytab") {
     setSelectedPhotos([]);
     setPhotoPopup(true);
   };
-
+const soldhouse = (row) => {
+  axios
+    .put("https://samplebuildapi-1.onrender.com/product/soldout", {
+      _id: row._id,
+      status: row.iscomplete === false ? "sold" : "sale", // ⭐ label name
+      iscomplete: row.iscomplete === false ? true : false
+    })
+    .then((res) => {
+      navigate(0); // 🔄 refresh current page
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
   // 🆕 SELECT / UNSELECT PHOTO
   const toggleSelectPhoto = (photo) => {
     setSelectedPhotos((prev) => {
@@ -677,7 +692,13 @@ if (title === "categorytab") {
               onClick={() => openDeletePhotos(r)}
             />
           )}
-          
+          {title === "ProjectHouse" && (
+  <IconButton
+    label={r.iscomplete === false ? "Sale" : "Sold"}
+    variant={r.iscomplete === false ? "primary" : "danger"}
+    onClick={() => soldhouse(r)}
+  />
+)}
         </div>
       </td>
     </tr>

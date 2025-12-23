@@ -26,11 +26,36 @@ import axios from "axios";
 
 
 const steps = [
-  { id: "01", title: "ANALYSIS", desc: "Lorem ipsum dolor sit amet Nulla iscing elit.", color: "#6ba6a9", icon: "🔍" },
-  { id: "02", title: "INVESTMENT", desc: "Lorem ipsum dolor sit amet Nulla iscing elit.", color: "#f4b431", icon: "💰" },
-  { id: "03", title: "GROWTH", desc: "Lorem ipsum dolor sit amet Nulla iscing elit.", color: "#e64b3b", icon: "📶" },
-  { id: "04", title: "BENEFITS", desc: "Lorem ipsum dolor sit amet Nulla iscing elit.", color: "#7d1d8f", icon: "📈" }
+  {
+    id: "01",
+    title: "ANALYSIS",
+    desc: "We carefully study your needs and understand your goals clearly.",
+    color: "#6ba6a9",
+    icon: "🔍"
+  },
+  {
+    id: "02",
+    title: "INVESTMENT",
+    desc: "Smart planning and the right investment for long-term value.",
+    color: "#f4b431",
+    icon: "💰"
+  },
+  {
+    id: "03",
+    title: "GROWTH",
+    desc: "Your investment grows steadily with strong planning and support.",
+    color: "#e64b3b",
+    icon: "📶"
+  },
+  {
+    id: "04",
+    title: "BENEFITS",
+    desc: "Enjoy lasting benefits, comfort, and complete peace of mind.",
+    color: "#7d1d8f",
+    icon: "📈"
+  }
 ];
+
 
 // const heroStats = [
 //   { id: 'experience', value: '32+', label: 'Years of Excellence' },
@@ -224,7 +249,7 @@ const cards = [
   {
     title: "Experienced Team",
     description:
-      "At Happy Homes, we are recognized as the best builders in Madurai with over 32 years of expertise in the industry. As top builders in Madurai, we bring unparalleled knowledge and craftsmanship to every project. Our experienced team is dedicated to delivering the finest luxury villas in Madurai and properties in Madurai. As promoters in Madurai, we ensure every home is built with care, making sure your investment is in safe hands.",
+      "At Happy Homes, we are recognized as the best builders in Madurai with over 5 years of expertise in the industry. As top builders in Madurai, we bring unparalleled knowledge and craftsmanship to every project. Our experienced team is dedicated to delivering the finest luxury villas in Madurai and properties in Madurai. As promoters in Madurai, we ensure every home is built with care, making sure your investment is in safe hands.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -456,7 +481,11 @@ const [projects, setProjects] = useState([]);
         <div className="container bestbuilder-grid" >
           {/* <h1 className="animate-bestbuilder-one">Best Builders in Madurai - <span className="bestbuilder-span">Happy homes</span></h1>
            <h1 className="animate-bestbuilder-two">Best Builders in Madurai - <span className="bestbuilder-span">Since 1993</span> </h1> */}
-          <p>Best Builders in Madurai for Dream Villas: With 32+ years of expertise and 5000+ homes built, Happy Homes Homes stands as the best builders in Madurai, delivering top-tier luxury villas in Madurai and premium properties in Madurai. As one of the top builders in Madurai, we take pride in our meticulous craftsmanship, innovation, and commitment to excellence. Our reputation as a trusted construction company in Madurai and leading promoters in Madurai makes us the go-to choice for those seeking new villa projects in Madurai. If you’re searching for builders in Madurai who deliver quality, precision, and reliability, Happy Homes Homes the top builders in madurai is your answer. Whether it’s house construction companies, apartment builders in Madurai, or premium housing projects in Madurai, we are committed to turning your dream home into reality</p>
+          <p>50+ happy clients, Happy Homes Homes stands proudly as one of the top builders in Madurai, delivering thoughtfully designed luxury villas in Madurai and premium housing projects that blend quality, comfort, and long-term value.
+
+As a trusted construction company in Madurai and leading promoters in Madurai, we are known for our meticulous craftsmanship, innovative designs, and unwavering commitment to excellence. From independent villas to premium residential developments, every project reflects our promise of reliability and precision.
+
+Our growing portfolio of new villa projects in Madurai—including Surya Garden Phase 1, Surya Garden Phase 2, Surya Garden Phase 3, Surya Garden Phase 4, and Surya Garden Phase 5—showcases our dedication to creating well-planned communities in prime locations near key landmarks like DMart and other essential amenities.</p>
 
           {/* {overviewContent.map(item => (
             <div key={item.id} className="best-card">
@@ -613,7 +642,7 @@ const [projects, setProjects] = useState([]);
             </h3>
 
             <p>
-              Since 1993, we have devoted 30 years to excellence, becoming one of
+              we have devoted 5 years to excellence, becoming one of
               the{" "}
               <a
                 href="https://hhoo.com/enquire-now-happy-homes/"
